@@ -32,3 +32,6 @@
 /home/prokhor40/Programming/pp/GrpcServer/obj/Debug/net8.0/GrpcServer.pdb
 /home/prokhor40/Programming/pp/GrpcServer/obj/Debug/net8.0/GrpcServer.genruntimeconfig.cache
 /home/prokhor40/Programming/pp/GrpcServer/obj/Debug/net8.0/ref/GrpcServer.dll
+/home/prokhor40/Programming/pp/GrpcServer/obj/Debug/net8.0/GrpcServer.sourcelink.json
+/home/prokhor40/Programming/pp/GrpcServer/bin/Debug/net8.0/MatrixFileLib.dll
+/home/prokhor40/Programming/pp/GrpcServer/bin/Debug/net8.0/MatrixFileLib.pdb

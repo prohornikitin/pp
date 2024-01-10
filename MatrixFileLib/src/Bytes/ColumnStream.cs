@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using MatrixFile;
 
-class MatrixFileColumnStream : Stream
+namespace MatrixFile.Bytes;
+
+public class ColumnStream : Stream
 {
     private readonly int columnIndex;
     private FileStream file;
@@ -22,6 +25,7 @@ class MatrixFileColumnStream : Stream
             return metadata.rows;
         }
     }
+    
     public override long Position {get; set;}
     public override bool CanSeek => file.CanSeek;
     public override bool CanRead => file.CanRead;
@@ -29,20 +33,20 @@ class MatrixFileColumnStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position) * sizeof(int))
-        {
-            throw new IndexOutOfRangeException("count is too large");
-        }
+        // if (count > (Size - Position - offset))
+        // {
+        //     throw new IndexOutOfRangeException("count is too large");
+        // }
         //TODO:
         throw new NotImplementedException();
     }
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position) * sizeof(int))
-        {
-            throw new IndexOutOfRangeException("count is too large");
-        }
+        // if (count > (Size - Position - offset))
+        // {
+        //     throw new IndexOutOfRangeException("count is too large");
+        // }
         var rowSize = Length * sizeof(int);
         for(int i = 0; i < count / sizeof(int); ++i)
         {
@@ -72,7 +76,7 @@ class MatrixFileColumnStream : Stream
         }
         if (origin == SeekOrigin.End) 
         {
-            if (offset > 0 || offset < columnSize)
+            if (offset > 0 || offset < -columnSize)
             {
                 throw new IndexOutOfRangeException("Out of row range");
             }
@@ -91,7 +95,7 @@ class MatrixFileColumnStream : Stream
         throw new UnreachableException("new SeekOrigin???");
     }
 
-    public MatrixFileColumnStream(FileStream file, int column)
+    public ColumnStream(FileStream file, int column)
     {
         this.file = file;
         columnIndex = column;
@@ -107,4 +111,3 @@ class MatrixFileColumnStream : Stream
         throw new NotImplementedException();
     }
 }
-

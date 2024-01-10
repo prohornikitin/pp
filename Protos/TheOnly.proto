@@ -33,4 +33,3 @@ message GetTaskReply {
   int32 power = 1;
   int32 row = 2;
 }
-

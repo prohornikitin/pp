@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\GrpcService.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\TheOnly.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MatrixFileLib\MatrixFileLib.csproj" />
   </ItemGroup>
 </Project>

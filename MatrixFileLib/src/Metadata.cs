@@ -1,3 +1,5 @@
+
+namespace MatrixFile;
 public readonly record struct Metadata(int rows, int columns) {
     public static long size {
         get {

@@ -1,16 +1,17 @@
 ﻿using System.Diagnostics;
+using MatrixFile;
 
-class MatrixFileRowStream : Stream
+namespace MatrixFile.Bytes;
+public class ItemsStream : Stream
 {
-    private readonly int rowIndex;
-    private readonly long rowStartInFile;
+    private readonly long startInFile;
     private FileStream file;
     private Metadata metadata;
     public override long Length
     {
         get
         {
-            return metadata.columns;
+            return metadata.columns * metadata.rows;
         }
     }
     private long Size
@@ -27,7 +28,7 @@ class MatrixFileRowStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position) * sizeof(int))
+        if (count > (Length - Position - offset))
         {
             throw new IndexOutOfRangeException("count is too large");
         }
@@ -37,7 +38,7 @@ class MatrixFileRowStream : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position) * sizeof(int))
+        if (count > (Size - Position - offset))
         {
             throw new IndexOutOfRangeException("count is too large");
         }
@@ -46,14 +47,13 @@ class MatrixFileRowStream : Stream
         return count;
     }
 
-    public MatrixFileRowStream(FileStream file, int row)
+    public ItemsStream(FileStream file)
     {
         this.file = file;
-        rowIndex = row;
         Position = 0;
         metadata = Metadata.ReadFrom(file);
-        rowStartInFile = Length * rowIndex + Metadata.size;
-        file.Seek(rowStartInFile, SeekOrigin.Begin);
+        startInFile = Metadata.size;
+        file.Seek(startInFile, SeekOrigin.Begin);
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -64,15 +64,15 @@ class MatrixFileRowStream : Stream
             {
                 throw new IndexOutOfRangeException("Out of row range");
             }
-            return file.Seek(rowStartInFile + offset, SeekOrigin.Begin);
+            return file.Seek(startInFile + offset, SeekOrigin.Begin);
         }
         if (origin == SeekOrigin.End) 
         {
-            if (offset > 0 || offset < Size)
+            if (offset > 0 || offset < -Size)
             {
                 throw new IndexOutOfRangeException("Out of row range");
             }
-            return file.Seek(rowStartInFile + Size - offset, SeekOrigin.Begin);
+            return file.Seek(startInFile + Size - offset, SeekOrigin.Begin);
         }
         if (origin == SeekOrigin.Current)
         {

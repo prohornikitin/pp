@@ -83,6 +83,16 @@
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
         }
+      },
+      "MatrixFileLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/MatrixFileLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MatrixFileLib.dll": {}
+        }
       }
     }
   },
@@ -290,13 +300,19 @@
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "MatrixFileLib/1.0.0": {
+      "type": "project",
+      "path": "../MatrixFileLib/MatrixFileLib.csproj",
+      "msbuildProject": "../MatrixFileLib/MatrixFileLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Google.Protobuf >= 3.25.1",
       "Grpc.Net.Client >= 2.60.0",
-      "Grpc.Tools >= 2.60.0"
+      "Grpc.Tools >= 2.60.0",
+      "MatrixFileLib >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -323,7 +339,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj": {
+              "projectPath": "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

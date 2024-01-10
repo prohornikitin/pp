@@ -28,19 +28,19 @@ namespace TheOnlyGen {
             "ZXRJbml0aWFsTWF0cml4UmVxdWVzdCIpChpHZXRJbml0aWFsTWF0cml4Um93",
             "UmVxdWVzdBILCgNyb3cYASABKAUiLwodR2V0SW5pdGlhbE1hdHJpeENvbHVt",
             "blJlcXVlc3QSDgoGY29sdW1uGAEgASgFIiYKFUdldEluaXRpYWxNYXRyaXhS",
-            "ZXBseRINCgVpdGVtcxgBIAMoBSJFCg5HZXRUYXNrUmVxdWVzdBISCgVwb3dl",
-            "chgBIAEoBUgAiAEBEhUKDXByZWZlcnJlZF9yb3cYAiABKAVCCAoGX3Bvd2Vy",
-            "IhsKDEdldFRhc2tSZXBseRILCgNyb3cYASABKAUypgMKB1RoZU9ubHkSaAoQ",
-            "R2V0SW5pdGlhbE1hdHJpeBIpLnRoZV9vbmx5X3NlcnZpY2UuR2V0SW5pdGlh",
-            "bE1hdHJpeFJlcXVlc3QaJy50aGVfb25seV9zZXJ2aWNlLkdldEluaXRpYWxN",
-            "YXRyaXhSZXBseTABEm4KE0dldEluaXRpYWxNYXRyaXhSb3cSLC50aGVfb25s",
-            "eV9zZXJ2aWNlLkdldEluaXRpYWxNYXRyaXhSb3dSZXF1ZXN0GicudGhlX29u",
-            "bHlfc2VydmljZS5HZXRJbml0aWFsTWF0cml4UmVwbHkwARJ0ChZHZXRJbml0",
-            "aWFsTWF0cml4Q29sdW1uEi8udGhlX29ubHlfc2VydmljZS5HZXRJbml0aWFs",
-            "TWF0cml4Q29sdW1uUmVxdWVzdBonLnRoZV9vbmx5X3NlcnZpY2UuR2V0SW5p",
-            "dGlhbE1hdHJpeFJlcGx5MAESSwoHR2V0VGFzaxIgLnRoZV9vbmx5X3NlcnZp",
-            "Y2UuR2V0VGFza1JlcXVlc3QaHi50aGVfb25seV9zZXJ2aWNlLkdldFRhc2tS",
-            "ZXBseUINqgIKVGhlT25seUdlbmIGcHJvdG8z"));
+            "ZXBseRINCgVpdGVtcxgBIAMoBSI+Cg5HZXRUYXNrUmVxdWVzdBIaCg1wcmVm",
+            "ZXJyZWRfcm93GAIgASgFSACIAQFCEAoOX3ByZWZlcnJlZF9yb3ciKgoMR2V0",
+            "VGFza1JlcGx5Eg0KBXBvd2VyGAEgASgFEgsKA3JvdxgCIAEoBTKmAwoHVGhl",
+            "T25seRJoChBHZXRJbml0aWFsTWF0cml4EikudGhlX29ubHlfc2VydmljZS5H",
+            "ZXRJbml0aWFsTWF0cml4UmVxdWVzdBonLnRoZV9vbmx5X3NlcnZpY2UuR2V0",
+            "SW5pdGlhbE1hdHJpeFJlcGx5MAESbgoTR2V0SW5pdGlhbE1hdHJpeFJvdxIs",
+            "LnRoZV9vbmx5X3NlcnZpY2UuR2V0SW5pdGlhbE1hdHJpeFJvd1JlcXVlc3Qa",
+            "Jy50aGVfb25seV9zZXJ2aWNlLkdldEluaXRpYWxNYXRyaXhSZXBseTABEnQK",
+            "FkdldEluaXRpYWxNYXRyaXhDb2x1bW4SLy50aGVfb25seV9zZXJ2aWNlLkdl",
+            "dEluaXRpYWxNYXRyaXhDb2x1bW5SZXF1ZXN0GicudGhlX29ubHlfc2Vydmlj",
+            "ZS5HZXRJbml0aWFsTWF0cml4UmVwbHkwARJLCgdHZXRUYXNrEiAudGhlX29u",
+            "bHlfc2VydmljZS5HZXRUYXNrUmVxdWVzdBoeLnRoZV9vbmx5X3NlcnZpY2Uu",
+            "R2V0VGFza1JlcGx5Qg2qAgpUaGVPbmx5R2VuYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -48,8 +48,8 @@ namespace TheOnlyGen {
             new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixRowRequest), global::TheOnlyGen.GetInitialMatrixRowRequest.Parser, new[]{ "Row" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixColumnRequest), global::TheOnlyGen.GetInitialMatrixColumnRequest.Parser, new[]{ "Column" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixReply), global::TheOnlyGen.GetInitialMatrixReply.Parser, new[]{ "Items" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskRequest), global::TheOnlyGen.GetTaskRequest.Parser, new[]{ "Power", "PreferredRow" }, new[]{ "Power" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskReply), global::TheOnlyGen.GetTaskReply.Parser, new[]{ "Row" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskRequest), global::TheOnlyGen.GetTaskRequest.Parser, new[]{ "PreferredRow" }, new[]{ "PreferredRow" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskReply), global::TheOnlyGen.GetTaskReply.Parser, new[]{ "Power", "Row" }, null, null, null, null)
           }));
     }
     #endregion
@@ -802,7 +802,6 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetTaskRequest(GetTaskRequest other) : this() {
       _hasBits0 = other._hasBits0;
-      power_ = other.power_;
       preferredRow_ = other.preferredRow_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -813,43 +812,31 @@ namespace TheOnlyGen {
       return new GetTaskRequest(this);
     }
 
-    /// <summary>Field number for the "power" field.</summary>
-    public const int PowerFieldNumber = 1;
-    private readonly static int PowerDefaultValue = 0;
-
-    private int power_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Power {
-      get { if ((_hasBits0 & 1) != 0) { return power_; } else { return PowerDefaultValue; } }
-      set {
-        _hasBits0 |= 1;
-        power_ = value;
-      }
-    }
-    /// <summary>Gets whether the "power" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasPower {
-      get { return (_hasBits0 & 1) != 0; }
-    }
-    /// <summary>Clears the value of the "power" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearPower() {
-      _hasBits0 &= ~1;
-    }
-
     /// <summary>Field number for the "preferred_row" field.</summary>
     public const int PreferredRowFieldNumber = 2;
+    private readonly static int PreferredRowDefaultValue = 0;
+
     private int preferredRow_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int PreferredRow {
-      get { return preferredRow_; }
+      get { if ((_hasBits0 & 1) != 0) { return preferredRow_; } else { return PreferredRowDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         preferredRow_ = value;
       }
+    }
+    /// <summary>Gets whether the "preferred_row" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPreferredRow {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "preferred_row" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPreferredRow() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -867,7 +854,6 @@ namespace TheOnlyGen {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Power != other.Power) return false;
       if (PreferredRow != other.PreferredRow) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -876,8 +862,7 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasPower) hash ^= Power.GetHashCode();
-      if (PreferredRow != 0) hash ^= PreferredRow.GetHashCode();
+      if (HasPreferredRow) hash ^= PreferredRow.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -896,11 +881,7 @@ namespace TheOnlyGen {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasPower) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Power);
-      }
-      if (PreferredRow != 0) {
+      if (HasPreferredRow) {
         output.WriteRawTag(16);
         output.WriteInt32(PreferredRow);
       }
@@ -914,11 +895,7 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasPower) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Power);
-      }
-      if (PreferredRow != 0) {
+      if (HasPreferredRow) {
         output.WriteRawTag(16);
         output.WriteInt32(PreferredRow);
       }
@@ -932,10 +909,7 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasPower) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Power);
-      }
-      if (PreferredRow != 0) {
+      if (HasPreferredRow) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PreferredRow);
       }
       if (_unknownFields != null) {
@@ -950,10 +924,7 @@ namespace TheOnlyGen {
       if (other == null) {
         return;
       }
-      if (other.HasPower) {
-        Power = other.Power;
-      }
-      if (other.PreferredRow != 0) {
+      if (other.HasPreferredRow) {
         PreferredRow = other.PreferredRow;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -971,10 +942,6 @@ namespace TheOnlyGen {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            Power = input.ReadInt32();
-            break;
-          }
           case 16: {
             PreferredRow = input.ReadInt32();
             break;
@@ -994,10 +961,6 @@ namespace TheOnlyGen {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Power = input.ReadInt32();
-            break;
-          }
           case 16: {
             PreferredRow = input.ReadInt32();
             break;
@@ -1043,6 +1006,7 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetTaskReply(GetTaskReply other) : this() {
+      power_ = other.power_;
       row_ = other.row_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1053,8 +1017,20 @@ namespace TheOnlyGen {
       return new GetTaskReply(this);
     }
 
+    /// <summary>Field number for the "power" field.</summary>
+    public const int PowerFieldNumber = 1;
+    private int power_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Power {
+      get { return power_; }
+      set {
+        power_ = value;
+      }
+    }
+
     /// <summary>Field number for the "row" field.</summary>
-    public const int RowFieldNumber = 1;
+    public const int RowFieldNumber = 2;
     private int row_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1080,6 +1056,7 @@ namespace TheOnlyGen {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Power != other.Power) return false;
       if (Row != other.Row) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1088,6 +1065,7 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (Power != 0) hash ^= Power.GetHashCode();
       if (Row != 0) hash ^= Row.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1107,8 +1085,12 @@ namespace TheOnlyGen {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Row != 0) {
+      if (Power != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(Power);
+      }
+      if (Row != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(Row);
       }
       if (_unknownFields != null) {
@@ -1121,8 +1103,12 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Row != 0) {
+      if (Power != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(Power);
+      }
+      if (Row != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(Row);
       }
       if (_unknownFields != null) {
@@ -1135,6 +1121,9 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (Power != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Power);
+      }
       if (Row != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Row);
       }
@@ -1149,6 +1138,9 @@ namespace TheOnlyGen {
     public void MergeFrom(GetTaskReply other) {
       if (other == null) {
         return;
+      }
+      if (other.Power != 0) {
+        Power = other.Power;
       }
       if (other.Row != 0) {
         Row = other.Row;
@@ -1169,6 +1161,10 @@ namespace TheOnlyGen {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
+            Power = input.ReadInt32();
+            break;
+          }
+          case 16: {
             Row = input.ReadInt32();
             break;
           }
@@ -1188,6 +1184,10 @@ namespace TheOnlyGen {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
+            Power = input.ReadInt32();
+            break;
+          }
+          case 16: {
             Row = input.ReadInt32();
             break;
           }

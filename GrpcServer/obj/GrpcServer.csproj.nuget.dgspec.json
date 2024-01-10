@@ -25,7 +25,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj": {
+                "projectPath": "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -64,6 +68,65 @@
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
             },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj",
+        "projectName": "MatrixFileLib",
+        "projectPath": "/home/prokhor40/Programming/pp/MatrixFileLib/MatrixFileLib.csproj",
+        "packagesPath": "/home/prokhor40/.nuget/packages/",
+        "outputPath": "/home/prokhor40/Programming/pp/MatrixFileLib/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/prokhor40/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.0, 8.0.0]"
+            }
+          ],
+          "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
