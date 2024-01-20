@@ -1,30 +1,37 @@
 ﻿using System.Diagnostics;
-using MatrixFile;
 
 namespace MatrixFile.Bytes;
 public class ItemsStream : Stream
 {
-    private readonly long startInFile;
-    private FileStream file;
-    private Metadata metadata;
+    private readonly long itemsStart;
+    private Stream src;
+    private Metadata Metadata;
+
+    public int Rows => Metadata.Rows;
+    public int Columns => Metadata.Columns;
+
     public override long Length
     {
         get
         {
-            return metadata.columns * metadata.rows;
+            return Columns * Rows * sizeof(float);
         }
     }
-    private long Size
+    private long _position = 0;
+    public override long Position
     {
-        get
+        get => _position;
+        set 
         {
-            return Length * sizeof(int);
+            if(value != _position) {
+                _position = value;
+                Seek(itemsStart + value, SeekOrigin.Begin);
+            }
         }
     }
-    public override long Position {get; set;}
-    public override bool CanSeek => file.CanSeek;
-    public override bool CanRead => file.CanRead;
-    public override bool CanWrite => file.CanWrite;
+    public override bool CanSeek => src.CanSeek;
+    public override bool CanRead => src.CanRead;
+    public override bool CanWrite => src.CanWrite;
 
     public override void Write(byte[] buffer, int offset, int count)
     {
@@ -32,62 +39,62 @@ public class ItemsStream : Stream
         {
             throw new IndexOutOfRangeException("count is too large");
         }
-        file.Write(buffer, offset, count);
-        Position += count;
+        src.Write(buffer, offset, count);
+        _position += count;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (count > (Size - Position - offset))
-        {
-            throw new IndexOutOfRangeException("count is too large");
-        }
-        file.ReadExactly(buffer, offset, count);
-        Position += count;
-        return count;
+        count = int.Min(count, (int)(Length - Position));
+        var read = src.Read(buffer, offset, count);
+        _position += read;
+        return read;
     }
 
-    public ItemsStream(FileStream file)
+    public ItemsStream(FileStream src) : this(src, Metadata.ReadFrom(src))
     {
-        this.file = file;
+        
+    }
+
+    ItemsStream(FileStream src, Metadata metadata) {
+        this.src = src;
+        Metadata = metadata;
+        itemsStart = Metadata.size;
         Position = 0;
-        metadata = Metadata.ReadFrom(file);
-        startInFile = Metadata.size;
-        file.Seek(startInFile, SeekOrigin.Begin);
     }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
         if (origin == SeekOrigin.Begin)
         {
-            if (offset < 0 || offset > Size)
+            if (offset < 0 || offset > Length)
             {
-                throw new IndexOutOfRangeException("Out of row range");
+                throw new IndexOutOfRangeException("Outside of the matrix data");
             }
-            return file.Seek(startInFile + offset, SeekOrigin.Begin);
+            _position = offset;
+            return src.Seek(itemsStart + offset, SeekOrigin.Begin);
         }
         if (origin == SeekOrigin.End) 
         {
-            if (offset > 0 || offset < -Size)
-            {
-                throw new IndexOutOfRangeException("Out of row range");
-            }
-            return file.Seek(startInFile + Size - offset, SeekOrigin.Begin);
+            Seek(Length - offset, SeekOrigin.End);
         }
         if (origin == SeekOrigin.Current)
         {
-            if (offset > (Length - Position) * sizeof(int) || offset < (Position - Length) * sizeof(int))
+            if (offset > (Length - Position) || offset < (Position - Length))
             {
-                throw new IndexOutOfRangeException("Out of row range");
+                throw new IndexOutOfRangeException("Outside of the matrix data");
             }
-            return file.Seek(offset, SeekOrigin.Current);
+            _position += offset;
+            return src.Seek(offset, SeekOrigin.Current);
         }
-        throw new UnreachableException("new SeekOrigin???");
+        throw new UnreachableException();
     }
 
-    public override void Flush() => file.Flush();
-    public override void SetLength(long value)
-    {
-        throw new NotImplementedException();
+    public override void Flush() => src.Flush();
+    public override void SetLength(long value) => throw new NotImplementedException();
+
+    public new void Dispose() {
+        base.Dispose();
+        src.Close();
     }
 }

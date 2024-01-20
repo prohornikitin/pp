@@ -46,48 +46,56 @@ namespace TheOnlyGen {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::TheOnlyGen.GetInitialMatrixRequest> __Marshaller_the_only_service_GetInitialMatrixRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetInitialMatrixRequest.Parser));
+    static readonly grpc::Marshaller<global::TheOnlyGen.Empty> __Marshaller_the_only_service_Empty = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.Empty.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::TheOnlyGen.GetInitialMatrixReply> __Marshaller_the_only_service_GetInitialMatrixReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetInitialMatrixReply.Parser));
+    static readonly grpc::Marshaller<global::TheOnlyGen.MatrixMetadata> __Marshaller_the_only_service_MatrixMetadata = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.MatrixMetadata.Parser));
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Marshaller<global::TheOnlyGen.MatrixItems> __Marshaller_the_only_service_MatrixItems = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.MatrixItems.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::TheOnlyGen.GetInitialMatrixRowRequest> __Marshaller_the_only_service_GetInitialMatrixRowRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetInitialMatrixRowRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::TheOnlyGen.GetInitialMatrixColumnRequest> __Marshaller_the_only_service_GetInitialMatrixColumnRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetInitialMatrixColumnRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::TheOnlyGen.GetTaskRequest> __Marshaller_the_only_service_GetTaskRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetTaskRequest.Parser));
-    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static readonly grpc::Marshaller<global::TheOnlyGen.GetTaskReply> __Marshaller_the_only_service_GetTaskReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::TheOnlyGen.GetTaskReply.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::TheOnlyGen.GetInitialMatrixRequest, global::TheOnlyGen.GetInitialMatrixReply> __Method_GetInitialMatrix = new grpc::Method<global::TheOnlyGen.GetInitialMatrixRequest, global::TheOnlyGen.GetInitialMatrixReply>(
+    static readonly grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixMetadata> __Method_GetInitialMatrixMetadata = new grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixMetadata>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "GetInitialMatrixMetadata",
+        __Marshaller_the_only_service_Empty,
+        __Marshaller_the_only_service_MatrixMetadata);
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    static readonly grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixItems> __Method_GetInitialMatrix = new grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixItems>(
         grpc::MethodType.ServerStreaming,
         __ServiceName,
         "GetInitialMatrix",
-        __Marshaller_the_only_service_GetInitialMatrixRequest,
-        __Marshaller_the_only_service_GetInitialMatrixReply);
+        __Marshaller_the_only_service_Empty,
+        __Marshaller_the_only_service_MatrixItems);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.GetInitialMatrixReply> __Method_GetInitialMatrixRow = new grpc::Method<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.GetInitialMatrixReply>(
+    static readonly grpc::Method<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.MatrixItems> __Method_GetInitialMatrixRow = new grpc::Method<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.MatrixItems>(
         grpc::MethodType.ServerStreaming,
         __ServiceName,
         "GetInitialMatrixRow",
         __Marshaller_the_only_service_GetInitialMatrixRowRequest,
-        __Marshaller_the_only_service_GetInitialMatrixReply);
+        __Marshaller_the_only_service_MatrixItems);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.GetInitialMatrixReply> __Method_GetInitialMatrixColumn = new grpc::Method<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.GetInitialMatrixReply>(
+    static readonly grpc::Method<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.MatrixItems> __Method_GetInitialMatrixColumn = new grpc::Method<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.MatrixItems>(
         grpc::MethodType.ServerStreaming,
         __ServiceName,
         "GetInitialMatrixColumn",
         __Marshaller_the_only_service_GetInitialMatrixColumnRequest,
-        __Marshaller_the_only_service_GetInitialMatrixReply);
+        __Marshaller_the_only_service_MatrixItems);
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::TheOnlyGen.GetTaskRequest, global::TheOnlyGen.GetTaskReply> __Method_GetTask = new grpc::Method<global::TheOnlyGen.GetTaskRequest, global::TheOnlyGen.GetTaskReply>(
+    static readonly grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.GetTaskReply> __Method_GetTask = new grpc::Method<global::TheOnlyGen.Empty, global::TheOnlyGen.GetTaskReply>(
         grpc::MethodType.Unary,
         __ServiceName,
         "GetTask",
-        __Marshaller_the_only_service_GetTaskRequest,
+        __Marshaller_the_only_service_Empty,
         __Marshaller_the_only_service_GetTaskReply);
 
     /// <summary>Service descriptor</summary>
@@ -101,25 +109,31 @@ namespace TheOnlyGen {
     public abstract partial class TheOnlyBase
     {
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task GetInitialMatrix(global::TheOnlyGen.GetInitialMatrixRequest request, grpc::IServerStreamWriter<global::TheOnlyGen.GetInitialMatrixReply> responseStream, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::TheOnlyGen.MatrixMetadata> GetInitialMatrixMetadata(global::TheOnlyGen.Empty request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task GetInitialMatrixRow(global::TheOnlyGen.GetInitialMatrixRowRequest request, grpc::IServerStreamWriter<global::TheOnlyGen.GetInitialMatrixReply> responseStream, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task GetInitialMatrix(global::TheOnlyGen.Empty request, grpc::IServerStreamWriter<global::TheOnlyGen.MatrixItems> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task GetInitialMatrixColumn(global::TheOnlyGen.GetInitialMatrixColumnRequest request, grpc::IServerStreamWriter<global::TheOnlyGen.GetInitialMatrixReply> responseStream, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task GetInitialMatrixRow(global::TheOnlyGen.GetInitialMatrixRowRequest request, grpc::IServerStreamWriter<global::TheOnlyGen.MatrixItems> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::System.Threading.Tasks.Task<global::TheOnlyGen.GetTaskReply> GetTask(global::TheOnlyGen.GetTaskRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task GetInitialMatrixColumn(global::TheOnlyGen.GetInitialMatrixColumnRequest request, grpc::IServerStreamWriter<global::TheOnlyGen.MatrixItems> responseStream, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::TheOnlyGen.GetTaskReply> GetTask(global::TheOnlyGen.Empty request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -132,6 +146,7 @@ namespace TheOnlyGen {
     public static grpc::ServerServiceDefinition BindService(TheOnlyBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
+          .AddMethod(__Method_GetInitialMatrixMetadata, serviceImpl.GetInitialMatrixMetadata)
           .AddMethod(__Method_GetInitialMatrix, serviceImpl.GetInitialMatrix)
           .AddMethod(__Method_GetInitialMatrixRow, serviceImpl.GetInitialMatrixRow)
           .AddMethod(__Method_GetInitialMatrixColumn, serviceImpl.GetInitialMatrixColumn)
@@ -145,10 +160,11 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     public static void BindService(grpc::ServiceBinderBase serviceBinder, TheOnlyBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_GetInitialMatrix, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.GetInitialMatrixRequest, global::TheOnlyGen.GetInitialMatrixReply>(serviceImpl.GetInitialMatrix));
-      serviceBinder.AddMethod(__Method_GetInitialMatrixRow, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.GetInitialMatrixReply>(serviceImpl.GetInitialMatrixRow));
-      serviceBinder.AddMethod(__Method_GetInitialMatrixColumn, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.GetInitialMatrixReply>(serviceImpl.GetInitialMatrixColumn));
-      serviceBinder.AddMethod(__Method_GetTask, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::TheOnlyGen.GetTaskRequest, global::TheOnlyGen.GetTaskReply>(serviceImpl.GetTask));
+      serviceBinder.AddMethod(__Method_GetInitialMatrixMetadata, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixMetadata>(serviceImpl.GetInitialMatrixMetadata));
+      serviceBinder.AddMethod(__Method_GetInitialMatrix, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.Empty, global::TheOnlyGen.MatrixItems>(serviceImpl.GetInitialMatrix));
+      serviceBinder.AddMethod(__Method_GetInitialMatrixRow, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.GetInitialMatrixRowRequest, global::TheOnlyGen.MatrixItems>(serviceImpl.GetInitialMatrixRow));
+      serviceBinder.AddMethod(__Method_GetInitialMatrixColumn, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::TheOnlyGen.GetInitialMatrixColumnRequest, global::TheOnlyGen.MatrixItems>(serviceImpl.GetInitialMatrixColumn));
+      serviceBinder.AddMethod(__Method_GetTask, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::TheOnlyGen.Empty, global::TheOnlyGen.GetTaskReply>(serviceImpl.GetTask));
     }
 
   }

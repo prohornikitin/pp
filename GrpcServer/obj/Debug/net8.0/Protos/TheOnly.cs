@@ -24,48 +24,63 @@ namespace TheOnlyGen {
     static TheOnlyReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChRQcm90b3MvVGhlT25seS5wcm90bxIQdGhlX29ubHlfc2VydmljZSIZChdH",
-            "ZXRJbml0aWFsTWF0cml4UmVxdWVzdCIpChpHZXRJbml0aWFsTWF0cml4Um93",
-            "UmVxdWVzdBILCgNyb3cYASABKAUiLwodR2V0SW5pdGlhbE1hdHJpeENvbHVt",
-            "blJlcXVlc3QSDgoGY29sdW1uGAEgASgFIiYKFUdldEluaXRpYWxNYXRyaXhS",
-            "ZXBseRINCgVpdGVtcxgBIAMoBSI+Cg5HZXRUYXNrUmVxdWVzdBIaCg1wcmVm",
-            "ZXJyZWRfcm93GAIgASgFSACIAQFCEAoOX3ByZWZlcnJlZF9yb3ciKgoMR2V0",
-            "VGFza1JlcGx5Eg0KBXBvd2VyGAEgASgFEgsKA3JvdxgCIAEoBTKmAwoHVGhl",
-            "T25seRJoChBHZXRJbml0aWFsTWF0cml4EikudGhlX29ubHlfc2VydmljZS5H",
-            "ZXRJbml0aWFsTWF0cml4UmVxdWVzdBonLnRoZV9vbmx5X3NlcnZpY2UuR2V0",
-            "SW5pdGlhbE1hdHJpeFJlcGx5MAESbgoTR2V0SW5pdGlhbE1hdHJpeFJvdxIs",
-            "LnRoZV9vbmx5X3NlcnZpY2UuR2V0SW5pdGlhbE1hdHJpeFJvd1JlcXVlc3Qa",
-            "Jy50aGVfb25seV9zZXJ2aWNlLkdldEluaXRpYWxNYXRyaXhSZXBseTABEnQK",
-            "FkdldEluaXRpYWxNYXRyaXhDb2x1bW4SLy50aGVfb25seV9zZXJ2aWNlLkdl",
-            "dEluaXRpYWxNYXRyaXhDb2x1bW5SZXF1ZXN0GicudGhlX29ubHlfc2Vydmlj",
-            "ZS5HZXRJbml0aWFsTWF0cml4UmVwbHkwARJLCgdHZXRUYXNrEiAudGhlX29u",
-            "bHlfc2VydmljZS5HZXRUYXNrUmVxdWVzdBoeLnRoZV9vbmx5X3NlcnZpY2Uu",
-            "R2V0VGFza1JlcGx5Qg2qAgpUaGVPbmx5R2VuYgZwcm90bzM="));
+            "ChRQcm90b3MvVGhlT25seS5wcm90bxIQdGhlX29ubHlfc2VydmljZSIHCgVF",
+            "bXB0eSJlCg5NYXRyaXhNZXRhZGF0YRIMCgRyb3dzGAEgASgFEg8KB2NvbHVt",
+            "bnMYAiABKAUSNAoMaXRlbURhdGFUeXBlGAMgASgOMh4udGhlX29ubHlfc2Vy",
+            "dmljZS5JdGVtRGF0YVR5cGUiKQoaR2V0SW5pdGlhbE1hdHJpeFJvd1JlcXVl",
+            "c3QSCwoDcm93GAEgASgFIi8KHUdldEluaXRpYWxNYXRyaXhDb2x1bW5SZXF1",
+            "ZXN0Eg4KBmNvbHVtbhgBIAEoBSIcCgtNYXRyaXhJdGVtcxINCgVpdGVtcxgB",
+            "IAEoDCKQAQoMR2V0VGFza1JlcGx5EgsKA3JvdxgBIAEoBRJACgxwb2x5bm9t",
+            "UGFydHMYAiADKAsyKi50aGVfb25seV9zZXJ2aWNlLkdldFRhc2tSZXBseS5Q",
+            "b2x5bm9tUGFydBoxCgtQb2x5bm9tUGFydBINCgVwb3dlchgBIAEoBRITCgtj",
+            "b2VmZmljaWVudBgCIAEoDCpeCgxJdGVtRGF0YVR5cGUSHAoYSVRFTURBVEFU",
+            "WVBFX1VOU1BFQ0lGSUVEEAASGAoUSVRFTURBVEFUWVBFX0ZMT0FUNjQQARIW",
+            "ChJJVEVNREFUQVRZUEVfSU5UMzIQAjLEAwoHVGhlT25seRJVChhHZXRJbml0",
+            "aWFsTWF0cml4TWV0YWRhdGESFy50aGVfb25seV9zZXJ2aWNlLkVtcHR5GiAu",
+            "dGhlX29ubHlfc2VydmljZS5NYXRyaXhNZXRhZGF0YRJMChBHZXRJbml0aWFs",
+            "TWF0cml4EhcudGhlX29ubHlfc2VydmljZS5FbXB0eRodLnRoZV9vbmx5X3Nl",
+            "cnZpY2UuTWF0cml4SXRlbXMwARJkChNHZXRJbml0aWFsTWF0cml4Um93Eiwu",
+            "dGhlX29ubHlfc2VydmljZS5HZXRJbml0aWFsTWF0cml4Um93UmVxdWVzdBod",
+            "LnRoZV9vbmx5X3NlcnZpY2UuTWF0cml4SXRlbXMwARJqChZHZXRJbml0aWFs",
+            "TWF0cml4Q29sdW1uEi8udGhlX29ubHlfc2VydmljZS5HZXRJbml0aWFsTWF0",
+            "cml4Q29sdW1uUmVxdWVzdBodLnRoZV9vbmx5X3NlcnZpY2UuTWF0cml4SXRl",
+            "bXMwARJCCgdHZXRUYXNrEhcudGhlX29ubHlfc2VydmljZS5FbXB0eRoeLnRo",
+            "ZV9vbmx5X3NlcnZpY2UuR2V0VGFza1JlcGx5Qg2qAgpUaGVPbmx5R2VuYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixRequest), global::TheOnlyGen.GetInitialMatrixRequest.Parser, null, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::TheOnlyGen.ItemDataType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.Empty), global::TheOnlyGen.Empty.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.MatrixMetadata), global::TheOnlyGen.MatrixMetadata.Parser, new[]{ "Rows", "Columns", "ItemDataType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixRowRequest), global::TheOnlyGen.GetInitialMatrixRowRequest.Parser, new[]{ "Row" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixColumnRequest), global::TheOnlyGen.GetInitialMatrixColumnRequest.Parser, new[]{ "Column" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetInitialMatrixReply), global::TheOnlyGen.GetInitialMatrixReply.Parser, new[]{ "Items" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskRequest), global::TheOnlyGen.GetTaskRequest.Parser, new[]{ "PreferredRow" }, new[]{ "PreferredRow" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskReply), global::TheOnlyGen.GetTaskReply.Parser, new[]{ "Power", "Row" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.MatrixItems), global::TheOnlyGen.MatrixItems.Parser, new[]{ "Items" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskReply), global::TheOnlyGen.GetTaskReply.Parser, new[]{ "Row", "PolynomParts" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::TheOnlyGen.GetTaskReply.Types.PolynomPart), global::TheOnlyGen.GetTaskReply.Types.PolynomPart.Parser, new[]{ "Power", "Coefficient" }, null, null, null, null)})
           }));
     }
     #endregion
 
   }
+  #region Enums
+  public enum ItemDataType {
+    [pbr::OriginalName("ITEMDATATYPE_UNSPECIFIED")] Unspecified = 0,
+    [pbr::OriginalName("ITEMDATATYPE_FLOAT64")] Float64 = 1,
+    [pbr::OriginalName("ITEMDATATYPE_INT32")] Int32 = 2,
+  }
+
+  #endregion
+
   #region Messages
-  public sealed partial class GetInitialMatrixRequest : pb::IMessage<GetInitialMatrixRequest>
+  public sealed partial class Empty : pb::IMessage<Empty>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetInitialMatrixRequest> _parser = new pb::MessageParser<GetInitialMatrixRequest>(() => new GetInitialMatrixRequest());
+    private static readonly pb::MessageParser<Empty> _parser = new pb::MessageParser<Empty>(() => new Empty());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetInitialMatrixRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<Empty> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -81,7 +96,7 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixRequest() {
+    public Empty() {
       OnConstruction();
     }
 
@@ -89,25 +104,25 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixRequest(GetInitialMatrixRequest other) : this() {
+    public Empty(Empty other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixRequest Clone() {
-      return new GetInitialMatrixRequest(this);
+    public Empty Clone() {
+      return new Empty(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetInitialMatrixRequest);
+      return Equals(other as Empty);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetInitialMatrixRequest other) {
+    public bool Equals(Empty other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -167,7 +182,7 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetInitialMatrixRequest other) {
+    public void MergeFrom(Empty other) {
       if (other == null) {
         return;
       }
@@ -208,6 +223,269 @@ namespace TheOnlyGen {
 
   }
 
+  public sealed partial class MatrixMetadata : pb::IMessage<MatrixMetadata>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<MatrixMetadata> _parser = new pb::MessageParser<MatrixMetadata>(() => new MatrixMetadata());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<MatrixMetadata> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MatrixMetadata() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MatrixMetadata(MatrixMetadata other) : this() {
+      rows_ = other.rows_;
+      columns_ = other.columns_;
+      itemDataType_ = other.itemDataType_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MatrixMetadata Clone() {
+      return new MatrixMetadata(this);
+    }
+
+    /// <summary>Field number for the "rows" field.</summary>
+    public const int RowsFieldNumber = 1;
+    private int rows_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Rows {
+      get { return rows_; }
+      set {
+        rows_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "columns" field.</summary>
+    public const int ColumnsFieldNumber = 2;
+    private int columns_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Columns {
+      get { return columns_; }
+      set {
+        columns_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "itemDataType" field.</summary>
+    public const int ItemDataTypeFieldNumber = 3;
+    private global::TheOnlyGen.ItemDataType itemDataType_ = global::TheOnlyGen.ItemDataType.Unspecified;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::TheOnlyGen.ItemDataType ItemDataType {
+      get { return itemDataType_; }
+      set {
+        itemDataType_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as MatrixMetadata);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(MatrixMetadata other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Rows != other.Rows) return false;
+      if (Columns != other.Columns) return false;
+      if (ItemDataType != other.ItemDataType) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Rows != 0) hash ^= Rows.GetHashCode();
+      if (Columns != 0) hash ^= Columns.GetHashCode();
+      if (ItemDataType != global::TheOnlyGen.ItemDataType.Unspecified) hash ^= ItemDataType.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Rows != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Rows);
+      }
+      if (Columns != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Columns);
+      }
+      if (ItemDataType != global::TheOnlyGen.ItemDataType.Unspecified) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) ItemDataType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Rows != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Rows);
+      }
+      if (Columns != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Columns);
+      }
+      if (ItemDataType != global::TheOnlyGen.ItemDataType.Unspecified) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) ItemDataType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Rows != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Rows);
+      }
+      if (Columns != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Columns);
+      }
+      if (ItemDataType != global::TheOnlyGen.ItemDataType.Unspecified) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ItemDataType);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(MatrixMetadata other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Rows != 0) {
+        Rows = other.Rows;
+      }
+      if (other.Columns != 0) {
+        Columns = other.Columns;
+      }
+      if (other.ItemDataType != global::TheOnlyGen.ItemDataType.Unspecified) {
+        ItemDataType = other.ItemDataType;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Rows = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Columns = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            ItemDataType = (global::TheOnlyGen.ItemDataType) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Rows = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Columns = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            ItemDataType = (global::TheOnlyGen.ItemDataType) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class GetInitialMatrixRowRequest : pb::IMessage<GetInitialMatrixRowRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -222,7 +500,7 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[1]; }
+      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -411,7 +689,7 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[2]; }
+      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -586,197 +864,16 @@ namespace TheOnlyGen {
 
   }
 
-  public sealed partial class GetInitialMatrixReply : pb::IMessage<GetInitialMatrixReply>
+  public sealed partial class MatrixItems : pb::IMessage<MatrixItems>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetInitialMatrixReply> _parser = new pb::MessageParser<GetInitialMatrixReply>(() => new GetInitialMatrixReply());
+    private static readonly pb::MessageParser<MatrixItems> _parser = new pb::MessageParser<MatrixItems>(() => new MatrixItems());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetInitialMatrixReply> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::TheOnlyGen.TheOnlyReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixReply() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixReply(GetInitialMatrixReply other) : this() {
-      items_ = other.items_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetInitialMatrixReply Clone() {
-      return new GetInitialMatrixReply(this);
-    }
-
-    /// <summary>Field number for the "items" field.</summary>
-    public const int ItemsFieldNumber = 1;
-    private static readonly pb::FieldCodec<int> _repeated_items_codec
-        = pb::FieldCodec.ForInt32(10);
-    private readonly pbc::RepeatedField<int> items_ = new pbc::RepeatedField<int>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<int> Items {
-      get { return items_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as GetInitialMatrixReply);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetInitialMatrixReply other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if(!items_.Equals(other.items_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      hash ^= items_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      items_.WriteTo(output, _repeated_items_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      items_.WriteTo(ref output, _repeated_items_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      size += items_.CalculateSize(_repeated_items_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetInitialMatrixReply other) {
-      if (other == null) {
-        return;
-      }
-      items_.Add(other.items_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10:
-          case 8: {
-            items_.AddEntriesFrom(input, _repeated_items_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10:
-          case 8: {
-            items_.AddEntriesFrom(ref input, _repeated_items_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class GetTaskRequest : pb::IMessage<GetTaskRequest>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<GetTaskRequest> _parser = new pb::MessageParser<GetTaskRequest>(() => new GetTaskRequest());
-    private pb::UnknownFieldSet _unknownFields;
-    private int _hasBits0;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetTaskRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<MatrixItems> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -792,7 +889,7 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetTaskRequest() {
+    public MatrixItems() {
       OnConstruction();
     }
 
@@ -800,61 +897,45 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetTaskRequest(GetTaskRequest other) : this() {
-      _hasBits0 = other._hasBits0;
-      preferredRow_ = other.preferredRow_;
+    public MatrixItems(MatrixItems other) : this() {
+      items_ = other.items_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetTaskRequest Clone() {
-      return new GetTaskRequest(this);
+    public MatrixItems Clone() {
+      return new MatrixItems(this);
     }
 
-    /// <summary>Field number for the "preferred_row" field.</summary>
-    public const int PreferredRowFieldNumber = 2;
-    private readonly static int PreferredRowDefaultValue = 0;
-
-    private int preferredRow_;
+    /// <summary>Field number for the "items" field.</summary>
+    public const int ItemsFieldNumber = 1;
+    private pb::ByteString items_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int PreferredRow {
-      get { if ((_hasBits0 & 1) != 0) { return preferredRow_; } else { return PreferredRowDefaultValue; } }
+    public pb::ByteString Items {
+      get { return items_; }
       set {
-        _hasBits0 |= 1;
-        preferredRow_ = value;
+        items_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
-    }
-    /// <summary>Gets whether the "preferred_row" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasPreferredRow {
-      get { return (_hasBits0 & 1) != 0; }
-    }
-    /// <summary>Clears the value of the "preferred_row" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearPreferredRow() {
-      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetTaskRequest);
+      return Equals(other as MatrixItems);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetTaskRequest other) {
+    public bool Equals(MatrixItems other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (PreferredRow != other.PreferredRow) return false;
+      if (Items != other.Items) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -862,7 +943,7 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasPreferredRow) hash ^= PreferredRow.GetHashCode();
+      if (Items.Length != 0) hash ^= Items.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -881,9 +962,9 @@ namespace TheOnlyGen {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasPreferredRow) {
-        output.WriteRawTag(16);
-        output.WriteInt32(PreferredRow);
+      if (Items.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteBytes(Items);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -895,9 +976,9 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasPreferredRow) {
-        output.WriteRawTag(16);
-        output.WriteInt32(PreferredRow);
+      if (Items.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteBytes(Items);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -909,8 +990,8 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasPreferredRow) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PreferredRow);
+      if (Items.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Items);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -920,12 +1001,12 @@ namespace TheOnlyGen {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetTaskRequest other) {
+    public void MergeFrom(MatrixItems other) {
       if (other == null) {
         return;
       }
-      if (other.HasPreferredRow) {
-        PreferredRow = other.PreferredRow;
+      if (other.Items.Length != 0) {
+        Items = other.Items;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -942,8 +1023,8 @@ namespace TheOnlyGen {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 16: {
-            PreferredRow = input.ReadInt32();
+          case 10: {
+            Items = input.ReadBytes();
             break;
           }
         }
@@ -961,8 +1042,8 @@ namespace TheOnlyGen {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 16: {
-            PreferredRow = input.ReadInt32();
+          case 10: {
+            Items = input.ReadBytes();
             break;
           }
         }
@@ -1006,8 +1087,8 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetTaskReply(GetTaskReply other) : this() {
-      power_ = other.power_;
       row_ = other.row_;
+      polynomParts_ = other.polynomParts_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1017,20 +1098,8 @@ namespace TheOnlyGen {
       return new GetTaskReply(this);
     }
 
-    /// <summary>Field number for the "power" field.</summary>
-    public const int PowerFieldNumber = 1;
-    private int power_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Power {
-      get { return power_; }
-      set {
-        power_ = value;
-      }
-    }
-
     /// <summary>Field number for the "row" field.</summary>
-    public const int RowFieldNumber = 2;
+    public const int RowFieldNumber = 1;
     private int row_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1039,6 +1108,17 @@ namespace TheOnlyGen {
       set {
         row_ = value;
       }
+    }
+
+    /// <summary>Field number for the "polynomParts" field.</summary>
+    public const int PolynomPartsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::TheOnlyGen.GetTaskReply.Types.PolynomPart> _repeated_polynomParts_codec
+        = pb::FieldCodec.ForMessage(18, global::TheOnlyGen.GetTaskReply.Types.PolynomPart.Parser);
+    private readonly pbc::RepeatedField<global::TheOnlyGen.GetTaskReply.Types.PolynomPart> polynomParts_ = new pbc::RepeatedField<global::TheOnlyGen.GetTaskReply.Types.PolynomPart>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::TheOnlyGen.GetTaskReply.Types.PolynomPart> PolynomParts {
+      get { return polynomParts_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1056,8 +1136,8 @@ namespace TheOnlyGen {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Power != other.Power) return false;
       if (Row != other.Row) return false;
+      if(!polynomParts_.Equals(other.polynomParts_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1065,8 +1145,8 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Power != 0) hash ^= Power.GetHashCode();
       if (Row != 0) hash ^= Row.GetHashCode();
+      hash ^= polynomParts_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1085,14 +1165,11 @@ namespace TheOnlyGen {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Power != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Power);
-      }
       if (Row != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(Row);
       }
+      polynomParts_.WriteTo(output, _repeated_polynomParts_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1103,14 +1180,11 @@ namespace TheOnlyGen {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Power != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Power);
-      }
       if (Row != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(Row);
       }
+      polynomParts_.WriteTo(ref output, _repeated_polynomParts_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1121,12 +1195,10 @@ namespace TheOnlyGen {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Power != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Power);
-      }
       if (Row != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Row);
       }
+      size += polynomParts_.CalculateSize(_repeated_polynomParts_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1139,12 +1211,10 @@ namespace TheOnlyGen {
       if (other == null) {
         return;
       }
-      if (other.Power != 0) {
-        Power = other.Power;
-      }
       if (other.Row != 0) {
         Row = other.Row;
       }
+      polynomParts_.Add(other.polynomParts_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1161,11 +1231,11 @@ namespace TheOnlyGen {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Power = input.ReadInt32();
+            Row = input.ReadInt32();
             break;
           }
-          case 16: {
-            Row = input.ReadInt32();
+          case 18: {
+            polynomParts_.AddEntriesFrom(input, _repeated_polynomParts_codec);
             break;
           }
         }
@@ -1184,17 +1254,251 @@ namespace TheOnlyGen {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Power = input.ReadInt32();
+            Row = input.ReadInt32();
             break;
           }
-          case 16: {
-            Row = input.ReadInt32();
+          case 18: {
+            polynomParts_.AddEntriesFrom(ref input, _repeated_polynomParts_codec);
             break;
           }
         }
       }
     }
     #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the GetTaskReply message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      public sealed partial class PolynomPart : pb::IMessage<PolynomPart>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<PolynomPart> _parser = new pb::MessageParser<PolynomPart>(() => new PolynomPart());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<PolynomPart> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::TheOnlyGen.GetTaskReply.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public PolynomPart() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public PolynomPart(PolynomPart other) : this() {
+          power_ = other.power_;
+          coefficient_ = other.coefficient_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public PolynomPart Clone() {
+          return new PolynomPart(this);
+        }
+
+        /// <summary>Field number for the "power" field.</summary>
+        public const int PowerFieldNumber = 1;
+        private int power_;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int Power {
+          get { return power_; }
+          set {
+            power_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "coefficient" field.</summary>
+        public const int CoefficientFieldNumber = 2;
+        private pb::ByteString coefficient_ = pb::ByteString.Empty;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public pb::ByteString Coefficient {
+          get { return coefficient_; }
+          set {
+            coefficient_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as PolynomPart);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(PolynomPart other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Power != other.Power) return false;
+          if (Coefficient != other.Coefficient) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (Power != 0) hash ^= Power.GetHashCode();
+          if (Coefficient.Length != 0) hash ^= Coefficient.GetHashCode();
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (Power != 0) {
+            output.WriteRawTag(8);
+            output.WriteInt32(Power);
+          }
+          if (Coefficient.Length != 0) {
+            output.WriteRawTag(18);
+            output.WriteBytes(Coefficient);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Power != 0) {
+            output.WriteRawTag(8);
+            output.WriteInt32(Power);
+          }
+          if (Coefficient.Length != 0) {
+            output.WriteRawTag(18);
+            output.WriteBytes(Coefficient);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (Power != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeInt32Size(Power);
+          }
+          if (Coefficient.Length != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeBytesSize(Coefficient);
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(PolynomPart other) {
+          if (other == null) {
+            return;
+          }
+          if (other.Power != 0) {
+            Power = other.Power;
+          }
+          if (other.Coefficient.Length != 0) {
+            Coefficient = other.Coefficient;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                Power = input.ReadInt32();
+                break;
+              }
+              case 18: {
+                Coefficient = input.ReadBytes();
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+            switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                Power = input.ReadInt32();
+                break;
+              }
+              case 18: {
+                Coefficient = input.ReadBytes();
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
 
   }
 
