@@ -1,18 +1,18 @@
 ﻿using System.Diagnostics;
 
 namespace MatrixFile.Bytes;
-public class ColumnStream : Stream
+public class ColumnStream : ItemsStream
 {
     private readonly int column;
     private Stream items;
-    public Metadata Metadata;
-    private int ItemSize => sizeof(float);
+    private Metadata metadata;
+    public Metadata Metadata => metadata with {};
 
     public override long Length
     {
         get
         {
-            return Metadata.Rows * ItemSize;
+            return metadata.Rows * itemSize;
         }
     }
     private long _position = 0;
@@ -30,48 +30,60 @@ public class ColumnStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position - offset))
-        {
-            throw new IndexOutOfRangeException("count is too large");
+        if (metadata.Columns == 1) {
+            items.Write(buffer, offset, count);
         }
-        items.Write(buffer, offset, count);
-        Position += count;
+        count = int.Min(count, (int)(Length - Position));
+        int before = (int)(itemSize - Position % itemSize) % itemSize;
+        items.Write(buffer, offset, before);
+        count -= before;
+        Position += before;
+        
+        var integralPart = count / itemSize * itemSize;
+        for(int i=0; i < integralPart / itemSize; ++i)
+        {
+            items.Write(buffer, offset + before + i * itemSize, itemSize);
+            Position += itemSize;
+        }
+        count -= integralPart;
+        
+        var after = int.Min(count, (int)(Length - Position));
+        items.Write(buffer, offset + before + integralPart, after);
+        Position += after;
     }
+
+   
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if(Metadata.Columns == 1) {
+        if (metadata.Columns == 1) {
             return items.Read(buffer, offset, count);
         }
         count = int.Min(count, (int)(Length - Position));
-        int before = (int)(ItemSize - Position % ItemSize) % ItemSize;
+        int before = (int)(itemSize - Position % itemSize) % itemSize;
         var readBefore = items.Read(buffer, offset, before);
         count -= before;
         Position += readBefore;
-        // Console.WriteLine($"attempt={before}, read={readBefore}");
     
-        var integralPart = count / ItemSize * ItemSize;
-        Console.WriteLine($"attempt={integralPart}");
+        var integralPart = count / itemSize * itemSize;
         var readIntegralPart = 0;
-        for(int i=0; i < integralPart / ItemSize; ++i) {
-            readIntegralPart += items.Read(buffer, offset + readBefore + i * ItemSize, ItemSize);
-            Position += ItemSize;
+        for(int i=0; i < integralPart / itemSize; ++i)
+        {
+            readIntegralPart += items.Read(buffer, offset + readBefore + i * itemSize, itemSize);
+            Position += itemSize;
         }
         count -= integralPart;
-        Console.WriteLine($"attempt={integralPart}, read={readIntegralPart}");
         
         var after = int.Min(count, (int)(Length - Position));
         var readAfter = items.Read(buffer, offset + readBefore + readIntegralPart, after);
-        Position += readAfter;
-        // Console.WriteLine($"attempt={after}, read={readAfter}");
-        
+        Position += readAfter;        
         return readBefore + readIntegralPart + readAfter;
     }
 
     public ColumnStream(FileStream src, int column)
     {
-        Metadata = Metadata.ReadFrom(src);
-        items = new ItemsStream(src);
+        metadata = Metadata.ReadFrom(src);
+        items = new DataStream(src);
         this.column = column;
         Position = 0;
     }
@@ -82,13 +94,13 @@ public class ColumnStream : Stream
         {
             if (offset < 0 || offset > Length)
             {
-                throw new IndexOutOfRangeException("Out of row range");
+                throw new IndexOutOfRangeException($"{offset} is out of column range");
             }
-            var row = offset / ItemSize;
-            var remains = offset % ItemSize;
-            var positionInItems = row * Metadata.Columns + column;
+            var row = offset / itemSize;
+            var remains = offset % itemSize;
+            var positionInItems = row * metadata.Columns + column;
             _position = offset;
-            var newPosition = positionInItems * ItemSize + remains;
+            var newPosition = positionInItems * itemSize + remains;
             if (newPosition > items.Length) {
                 return items.Seek(Length, SeekOrigin.Begin);
             }
@@ -108,8 +120,11 @@ public class ColumnStream : Stream
     public override void Flush() => items.Flush();
     public override void SetLength(long value) => throw new NotImplementedException();
 
-    public new void Dispose() {
-        base.Dispose();
-        items.Close();
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        if(disposing)
+        {
+            items.Dispose();
+        }
     }
 }

@@ -1,20 +1,21 @@
 ﻿using System.Diagnostics;
 
 namespace MatrixFile.Bytes;
-public class ItemsStream : Stream
+public class DataStream : ItemsStream
 {
     private readonly long itemsStart;
     private Stream src;
-    private Metadata Metadata;
+    private Metadata metadata;
+    public Metadata Metadata => metadata with {};
 
-    public int Rows => Metadata.Rows;
-    public int Columns => Metadata.Columns;
+    public int Rows => metadata.Rows;
+    public int Columns => metadata.Columns;
 
     public override long Length
     {
         get
         {
-            return Columns * Rows * sizeof(float);
+            return Columns * Rows * itemSize;
         }
     }
     private long _position = 0;
@@ -35,10 +36,6 @@ public class ItemsStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position - offset))
-        {
-            throw new IndexOutOfRangeException("count is too large");
-        }
         src.Write(buffer, offset, count);
         _position += count;
     }
@@ -51,14 +48,14 @@ public class ItemsStream : Stream
         return read;
     }
 
-    public ItemsStream(FileStream src) : this(src, Metadata.ReadFrom(src))
+    public DataStream(FileStream src) : this(src, Metadata.ReadFrom(src))
     {
         
     }
 
-    ItemsStream(FileStream src, Metadata metadata) {
+    DataStream(FileStream src, Metadata metadata) {
         this.src = src;
-        Metadata = metadata;
+        this.metadata = metadata;
         itemsStart = Metadata.size;
         Position = 0;
     }
@@ -80,7 +77,7 @@ public class ItemsStream : Stream
         }
         if (origin == SeekOrigin.Current)
         {
-            if (offset > (Length - Position) || offset < (Position - Length))
+            if (offset > (Length - Position) || offset < -Position)
             {
                 throw new IndexOutOfRangeException("Outside of the matrix data");
             }
@@ -93,8 +90,11 @@ public class ItemsStream : Stream
     public override void Flush() => src.Flush();
     public override void SetLength(long value) => throw new NotImplementedException();
 
-    public new void Dispose() {
-        base.Dispose();
-        src.Close();
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        if(disposing)
+        {
+            src.Dispose();
+        }
     }
 }

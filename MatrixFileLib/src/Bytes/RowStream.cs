@@ -1,17 +1,18 @@
 ﻿using System.Diagnostics;
 
 namespace MatrixFile.Bytes;
-public class RowStream : Stream
+public class RowStream : ItemsStream
 {
     private readonly int row;
     private readonly long rowStart;
-    private ItemsStream items;
-    private Metadata Metadata;
+    private DataStream items;
+    private Metadata metadata;
+    public Metadata Metadata => metadata with {};
     public override long Length
     {
         get
         {
-            return Metadata.Columns * sizeof(float);
+            return metadata.Columns * itemSize;
         }
     }
 
@@ -34,10 +35,6 @@ public class RowStream : Stream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (count > (Length - Position - offset))
-        {
-            throw new IndexOutOfRangeException("count is too large");
-        }
         items.Write(buffer, offset, count);
         Position += count;
     }
@@ -54,8 +51,8 @@ public class RowStream : Stream
 
     public RowStream(FileStream src, int row)
     {
-        Metadata = Metadata.ReadFrom(src);
-        items = new ItemsStream(src);
+        metadata = Metadata.ReadFrom(src);
+        items = new DataStream(src);
         this.row = row;
         rowStart = Length * this.row;
         Position = 0;
@@ -99,8 +96,11 @@ public class RowStream : Stream
         throw new NotImplementedException();
     }
 
-    public new void Dispose() {
-        base.Dispose();
-        items.Close();
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        if(disposing)
+        {
+            items.Dispose();
+        }
     }
 }

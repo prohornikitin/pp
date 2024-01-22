@@ -2,42 +2,44 @@ syntax = "proto3";
 option csharp_namespace = "TheOnlyGen";
 package the_only_service;
 
+
 service TheOnly {
-  rpc GetInitialMatrixMetadata (Empty) returns (MatrixMetadata);
-  rpc GetInitialMatrix (Empty) returns (stream MatrixItems);
-  rpc GetInitialMatrixRow (GetInitialMatrixRowRequest) returns (stream MatrixItems);
-  rpc GetInitialMatrixColumn (GetInitialMatrixColumnRequest) returns (stream MatrixItems);
-  rpc GetTask(Empty) returns (GetTaskReply);
+  rpc GetInitialMatrix (GetInitialMatrixRequest) returns (stream MatrixItems);
+  rpc GetTask (GetTaskRequest) returns (GetTaskResponse);
+  rpc SubmitResult (stream ResultPart) returns (Empty);
 }
 
 message Empty {
-
+  
 }
 
-message MatrixMetadata {
-  int32 rows = 1;
-  int32 columns = 2;
+message GetTaskRequest {
+  optional int32 prevMatrixId = 1;
 }
 
-message GetInitialMatrixRowRequest {
-  int32 row = 1;
-}
-
-message GetInitialMatrixColumnRequest {
-  int32 column = 1;
+message GetInitialMatrixRequest {
+  int32 matrixId = 1;
 }
 
 message MatrixItems {
   bytes items = 1;
 }
 
-message GetTaskReply {
-  message PolynomPart {
-    int32 power = 1;
-    bytes coefficient = 2;
-  }
-  int32 column = 1;
+message PolynomPart {
+  int32 power = 1;
+  int32 coefficient = 2;
+}
+
+message GetTaskResponse {
+  int64 taskId = 1;
+  int32 initialMatrixId = 2;
+  int32 column = 3;
 
   // Must be sorted in ascending order;
-  repeated PolynomPart polynomParts = 2;
+  repeated PolynomPart polynomParts = 4;
+}
+
+message ResultPart {
+  int64 taskId = 1;
+  bytes data = 2;
 }
