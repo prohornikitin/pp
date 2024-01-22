@@ -1,0 +1,189 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"sem5_pp_userInterface",
+      "version":"0.1"
+    },
+    "servers": [
+        { "url": "http://localhost:8000/api" }
+    ],
+    "components": {
+        "schemas": {
+            "polynom": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "power": { "type": "integer" },
+                        "coefficient": { "type": "integer" }
+                    }
+                }
+            },
+            "task_new": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "matrixId": { "type": "integer" },
+                    "polynom": { "$ref": "#/components/schemas/polynom" }
+                }
+            },
+            "task_minimal": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "integer" },
+                    "name": { "type": "string" },
+                    "status": {
+                        "enum": [
+                            "Error",
+                            "WorkInProgress",
+                            "ResultReady"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/tasks": {
+            "get": {
+                "description": "Minimal information about tasks that user queued before",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/task_minimal" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create new task",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/task_new"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "integer" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{taskId}": {
+            "delete": {
+                "description": "Will delete all results if the task was completed, otherwise it will stop the work on the task.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "name": "taskId",
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "OK" }
+                }
+            }
+        },
+        "/tasks/{taskId}/result": {
+            "get": {
+                "description": "Download Task result",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "taskId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/matrices": {
+            "get": {
+                "description": "Download matrix",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": { "type": "integer" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Upload matrix ",
+                "requestBody": {
+                    "content": {
+                        "application/octet-stream": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "matrixId": { "type": "integer" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }
