@@ -1,9 +1,9 @@
 syntax = "proto3";
-option csharp_namespace = "TheOnlyGen";
-package the_only_service;
+option csharp_namespace = "ComputingNodeGen";
+package computing_node_service;
 
 
-service TheOnly {
+service ComputingNode {
   rpc GetInitialMatrix (GetInitialMatrixRequest) returns (stream MatrixItems);
   rpc GetTask (GetTaskRequest) returns (GetTaskResponse);
   rpc SubmitResult (stream ResultPart) returns (Empty);

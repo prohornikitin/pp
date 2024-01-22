@@ -1,16 +1,16 @@
 using Grpc.Core;
-using TheOnlyGen;
+using ComputingNodeGen;
 using Google.Protobuf;
 
 namespace GrpcServer.Services;
 
-public class TheOnlyService : TheOnly.TheOnlyBase
+public class ComputingNodeService : ComputingNode.ComputingNodeBase
 {
     const int maxBytesPerChunk = 24;
     byte[] buffer = new byte[maxBytesPerChunk];
     
 
-    public TheOnlyService()
+    public ComputingNodeService()
     {
         
     }

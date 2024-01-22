@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <Protobuf Include="..\Protos\TheOnly.proto" GrpcServices="Server" />
+    <Protobuf Include="..\Protos\ComputingNode.proto" GrpcServices="Server" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />

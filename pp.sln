@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeClient", "NodeClient\NodeClient.csproj", "{30034838-25F8-44F1-B28D-F010815CDCC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcServer", "GrpcServer\GrpcServer.csproj", "{85E80444-9600-40A3-8CAA-0050B32E7DD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{85E80444-9600-40A3-8CAA-0050B32E7DD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixFileLib", "MatrixFileLib\MatrixFileLib.csproj", "{70306B88-EC7C-46B9-9CBA-7CCC3BDDC097}"
 EndProject

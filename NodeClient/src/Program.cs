@@ -1,14 +1,14 @@
 ﻿using Google.Protobuf;
 using Grpc.Net.Client;
 using MatrixFile;
-using TheOnlyGen;
+using ComputingNodeGen;
 
 internal class Program
 {
     private static async Task Main()
     {
         var channel = GrpcChannel.ForAddress("http://localhost:5113");
-        var client = new TheOnly.TheOnlyClient(channel);
+        var client = new ComputingNode.ComputingNodeClient(channel);
 
         var task = await client.GetTaskAsync(new GetTaskRequest());
         var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
@@ -16,7 +16,7 @@ internal class Program
         await SubmitResult(client, result, task.TaskId);
     }
 
-    private static async Task<Matrix> GetInitialMatrix(TheOnly.TheOnlyClient client, int matrixId)
+    private static async Task<Matrix> GetInitialMatrix(ComputingNode.ComputingNodeClient client, int matrixId)
     {
         using (var initialMatrixFile = File.OpenWrite("initial.bin"))
         {
@@ -33,7 +33,7 @@ internal class Program
         return new Matrix("initial.bin");
     }
 
-    private static async Task SubmitResult(TheOnly.TheOnlyClient client, Matrix result, long taskId)
+    private static async Task SubmitResult(ComputingNode.ComputingNodeClient client, Matrix result, long taskId)
     {
         using var call = client.SubmitResult();
         const int sizeOfBuffer = 24;

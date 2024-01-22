@@ -1,4 +1,3 @@
-using Google.Protobuf.WellKnownTypes;
 using GrpcServer.Models;
 using GrpcServer.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,7 @@ builder
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<TheOnlyService>();
+app.MapGrpcService<ComputingNodeService>();
 app.MapControllers();
 
 
