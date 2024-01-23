@@ -40,23 +40,25 @@ public class ColumnPowerCalculator {
         {
             initialColumn.CopyTo(bufferColumns[0]);
         }
-        foreach (var power in Range(1, neededPower-1))
-        {
-            var initialData = initialMatrix.GetData();
-            foreach (var i in Range(0, initialMetadata.Rows))
+        using(var initialData = initialMatrix.GetData()) {
+            foreach (var power in Range(1, neededPower-1))
             {
-                int sum = 0;
-                bufferColumns[0].SeekItem(0, SeekOrigin.Begin);
-                foreach (var j in Range(0, initialMetadata.Columns))
+                initialData.Seek(0, SeekOrigin.Begin);
+                foreach (var i in Range(0, initialMetadata.Rows))
                 {
-                    int a = bufferColumns[0].ReadItem();
-                    int b = initialData.ReadItem();
-                    sum += a*b;
+                    int sum = 0;
+                    bufferColumns[0].SeekItem(0, SeekOrigin.Begin);
+                    foreach (var j in Range(0, initialMetadata.Columns))
+                    {
+                        int a = bufferColumns[0].ReadItem();
+                        int b = initialData.ReadItem();
+                        sum += a*b;
+                    }
+                    bufferColumns[1].WriteItem(sum);
                 }
-                bufferColumns[1].WriteItem(sum);
+                Swap(ref bufferColumns[0], ref bufferColumns[1]);
+                Swap(ref bufferFilePaths[0], ref bufferFilePaths[1]);
             }
-            Swap(ref bufferColumns[0], ref bufferColumns[1]);
-            Swap(ref bufferFilePaths[0], ref bufferFilePaths[1]);
         }
         alreadyCalculatedPowers.Add(neededPower, File.OpenRead(bufferFilePaths[0]));
         foreach (var buffer in bufferColumns)
