@@ -20,11 +20,14 @@ public class Matrix {
         }
     }
 
-    public Matrix(string filePath, Metadata metadata, FileAccess fileAccess = FileAccess.Write)
+    public Matrix(string filePath, Metadata metadata, FileAccess fileAccess = FileAccess.Write, bool notMetadataWrite = false)
     {
         FilePath = filePath;
         this.metadata = metadata;
         this.fileAccess = fileAccess;
+        if(notMetadataWrite) {
+            return;
+        }
         using (var file = File.OpenWrite(filePath))
         {
             metadata.WriteTo(file);

@@ -24,7 +24,7 @@
                 "type": "object",
                 "properties": {
                     "name": { "type": "string" },
-                    "matrixId": { "type": "integer" },
+                    "InitialMatrixId": { "type": "integer" },
                     "polynom": { "$ref": "#/components/schemas/polynom" }
                 }
             },

@@ -1,5 +1,5 @@
-using GrpcServer.Models;
-using GrpcServer.Services;
+using Server.Models;
+using Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder
 .Services.AddGrpc()
 .Services.AddControllers()
-.Services
-.AddDbContext<UserTaskContext>(opt => opt.UseInMemoryDatabase(nameof(UserTask)))
-.AddDbContext<MatrixContext>(opt => opt.UseInMemoryDatabase(nameof(Matrix)));
+.Services.AddDbContext<TheOnlyDbContext>(opt => opt.UseInMemoryDatabase("db"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

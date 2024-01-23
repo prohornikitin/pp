@@ -14,11 +14,11 @@ message Empty {
 }
 
 message GetTaskRequest {
-  optional int32 prevMatrixId = 1;
+  optional int64 prevMatrixId = 1;
 }
 
 message GetInitialMatrixRequest {
-  int32 matrixId = 1;
+  int64 matrixId = 1;
 }
 
 message MatrixItems {
@@ -32,7 +32,7 @@ message PolynomPart {
 
 message GetTaskResponse {
   int64 taskId = 1;
-  int32 initialMatrixId = 2;
+  int64 initialMatrixId = 2;
   int32 column = 3;
 
   // Must be sorted in ascending order;

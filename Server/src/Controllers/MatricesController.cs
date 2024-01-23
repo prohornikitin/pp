@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GrpcServer.Models;
-using NuGet.Packaging;
-using System.IO.Pipelines;
-using System.Net.Http.Headers;
-using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Server.Models;
+using MatrixFile;
+using Matrix = Server.Models.Matrix;
 
-namespace GrpcServer.src.Controllers
+namespace Server.src.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MatricesController : ControllerBase
     {
-        private readonly MatrixContext context;
+        private readonly TheOnlyDbContext context;
 
-        public MatricesController(MatrixContext context)
+        public MatricesController(TheOnlyDbContext context)
         {
             this.context = context;
         }
@@ -29,14 +21,14 @@ namespace GrpcServer.src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Matrix>>> GetMatrix()
         {
-            return await context.Matrix.ToListAsync();
+            return await context.Matrices.ToListAsync();
         }
 
         // GET: api/Matrices/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBinary(long id)
         {
-            var matrix = await context.Matrix.FindAsync(id);
+            var matrix = await context.Matrices.FindAsync(id);
 
             if (matrix == null)
             {
@@ -50,31 +42,34 @@ namespace GrpcServer.src.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Consumes("application/octet-stream")]
-        public async Task<ActionResult<Matrix>> PostBinary()
+        public async Task<ActionResult> PostBinary()
         {
-            var fileName = string.Format(@"{0}.txt", Guid.NewGuid());
-            var path = "uploads/" + fileName;
-            var matrix = new Matrix() { FilePath = path };
+            var path = $"matrices/{Guid.NewGuid()}.txt";
             using(Stream from = Request.Body, to = System.IO.File.OpenWrite(path))
             {
                 await from.CopyToAsync(to);
             }
-            context.Matrix.Add(matrix);
+            using var file = System.IO.File.OpenRead(path);
+            var matrix = new Matrix() { 
+                FilePath = path,
+                Columns = Metadata.ReadFrom(file).Columns,
+            };
+            await context.Matrices.AddAsync(matrix);
             await context.SaveChangesAsync();
-            return CreatedAtAction("GetMatrix", new { id = matrix.Id }, matrix);
+            return CreatedAtAction(nameof(GetMatrix), new { id = matrix.Id }, new { id = matrix.Id });
         }
 
         // DELETE: api/Matrices/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMatrix(long id)
+        public async Task<ActionResult> DeleteMatrix(long id)
         {
-            var matrix = await context.Matrix.FindAsync(id);
+            var matrix = await context.Matrices.FindAsync(id);
             if (matrix == null)
             {
                 return NotFound();
             }
 
-            context.Matrix.Remove(matrix);
+            context.Matrices.Remove(matrix);
             await context.SaveChangesAsync();
 
             return NoContent();
