@@ -3,6 +3,7 @@ using ComputingNodeGen;
 using Google.Protobuf;
 using Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
 
 namespace Server.GrpcServices;
 
@@ -53,7 +54,7 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         }
     }
 
-    private async Task<NodeTask?> ScheduleNextTask()
+    private async Task<NodeTask?> ScheduleNextTask(IEnumerable<long> preferredMatrixIds)
     {
         var previouslyFailedNodeTask = await db.NodeTasks.Include(t => t.UserTask).FirstOrDefaultAsync(
             t => t.State == TaskState.Fail
@@ -63,11 +64,19 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
             previouslyFailedNodeTask.State = TaskState.WorkInProgress;
             return previouslyFailedNodeTask;
         }
-
-        var userTask = await db.UserTasks.Include(t => t.InitialMatrix).FirstOrDefaultAsync(
-            //manual check for Empty range because linq doesn't support custom methods
-            t => t.UnscheduledColumns.Start != t.UnscheduledColumns.End 
-        );
+        
+        var userTask = await db.UserTasks
+            .Include(t => t.InitialMatrix)
+            .FirstOrDefaultAsync(t => 
+                    (t.UnscheduledColumns.Start != t.UnscheduledColumns.End) && 
+                    preferredMatrixIds.Contains(t.InitialMatrixId)
+            );
+        userTask ??= await db.UserTasks
+            .Include(t => t.InitialMatrix)
+            .FirstOrDefaultAsync(
+                //manual check for Empty range because linq doesn't support custom methods
+                t => t.UnscheduledColumns.Start != t.UnscheduledColumns.End 
+            );
         if (userTask == null)
         {
             return null;
@@ -79,6 +88,7 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         var nodeTask = new NodeTask {
             UserTask = userTask,
             column = column,
+            UserTaskId = userTask.Id,
         };
         await db.AddAsync(nodeTask);
         await db.SaveChangesAsync();
@@ -89,7 +99,7 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         GetTaskRequest request,
         ServerCallContext context)
     {
-        var task = await ScheduleNextTask();
+        var task = await ScheduleNextTask(request.PreferredMatrixIds);
         if (task == null)
         {
             context.Status = new Status(StatusCode.NotFound, "task not found");
@@ -115,30 +125,45 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         ServerCallContext context)
     {
         var temporaryPath = Path.GetTempFileName();
-        long nodeTaskId = 0;
-        using(FileStream file = File.OpenWrite(temporaryPath))
-        {
-            await foreach (var request in requestStream.ReadAllAsync())
-            {
-                nodeTaskId = request.TaskId;
-                var buffer = new byte[request.Data.Length];
-                request.Data.CopyTo(buffer, 0);
-                await file.WriteAsync(buffer, 0, buffer.Length);
-            }
-        }
-        var nodeTask = await db.NodeTasks.FindAsync(nodeTaskId);
+        await requestStream.MoveNext();
+        long nodeTaskId = requestStream.Current.TaskId;
+        var nodeTask = await db.NodeTasks
+            .Include(t => t.UserTask)
+            .ThenInclude(u => u.Result)
+            .SingleOrDefaultAsync(t => t.Id == nodeTaskId);
         if (nodeTask == null)
         {
             context.Status = new Status(StatusCode.NotFound, "task not found");
             return new Empty{};
         }
+        var matrix = new MatrixFile.Matrix(nodeTask!.UserTask.Result.FilePath, FileAccess.ReadWrite);
+        using(Stream columnData = matrix.GetColumn(nodeTask.column))
+        {
+            do
+            {
+                var request = requestStream.Current;
+                nodeTaskId = request.TaskId;
+                var buffer = new byte[request.Data.Length];
+                request.Data.CopyTo(buffer, 0);
+                await columnData.WriteAsync(buffer, 0, buffer.Length);
+            } 
+            while(await requestStream.MoveNext());
+        }
+        db.NodeTasks.Remove(nodeTask);
+        await db.SaveChangesAsync();
+        if (!nodeTask.UserTask.UnscheduledColumns.IsEmpty())
+        {
+            return new Empty {};
+        }
+        var debugRemains = db.NodeTasks.Where(t => t.UserTaskId == nodeTask.UserTaskId).SingleOrDefault();
+        var remainsWorking = await db.NodeTasks
+            .Where(t => t.UserTaskId == nodeTask.UserTaskId)
+            .CountAsync();
+        if(remainsWorking > 0) {
+            return new Empty {};
+        }
         
-        var resultPath = Path.Join(resultsDir, $"task_{nodeTaskId}.bin");
-        File.Move(temporaryPath, resultPath, overwrite: true);
-        var resultMatrix = Matrix.WithExistingFile(resultPath);
-        await db.Matrices.AddAsync(resultMatrix);
-        nodeTask.result = resultMatrix;
-        db.NodeTasks.Update(nodeTask);
+        nodeTask.UserTask.State = TaskState.ResultReady;
         await db.SaveChangesAsync();
         return new Empty {};
     }

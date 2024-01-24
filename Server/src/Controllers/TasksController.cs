@@ -11,18 +11,20 @@ namespace Server.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly TheOnlyDbContext context;
-        public TasksController(TheOnlyDbContext context)
+        private readonly TheOnlyDbContext db;
+        private readonly string matricesDir;
+        public TasksController(TheOnlyDbContext context, IConfiguration configuration)
         {
-            this.context = context;
+            this.db = context;
+            matricesDir = configuration["Custom:MatricesDirectory"]!;
         }
 
         // GET: api/Tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserTaskMinimalInfo>>> GetTasks()
         {
-            var db = await context.UserTasks.Include(t=>t.InitialMatrix).ToListAsync();
-            var converted = db.Select(t => new UserTaskMinimalInfo() {
+            var all = await db.UserTasks.Include(t=>t.InitialMatrix).ToListAsync();
+            var converted = all.Select(t => new UserTaskMinimalInfo() {
                 Id = t.Id,
                 Name = t.Name,
                 Polynom = t.Polynom,
@@ -35,7 +37,7 @@ namespace Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserTask>> GetTask(long id)
         {
-            var task = await context.UserTasks.FindAsync(id);
+            var task = await db.UserTasks.FindAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -43,16 +45,33 @@ namespace Server.Controllers
             return task;
         }
 
+        [HttpGet("{taskId}/result")]
+        public async Task<ActionResult<UserTask>> GetTaskResult(long taskId)
+        {
+            var task = await db.UserTasks
+                .Include(t => t.Result)
+                .SingleOrDefaultAsync(t => t.Id == taskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            Stream src = System.IO.File.OpenRead(task.Result.FilePath);
+            return File(src, "application/octet-stream");
+        }
+
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult> PostTask(NewUserTask request)
         {
-            var initialMatrix = await context.Matrices.FindAsync(request.InitialMatrixId);
+            var initialMatrix = await db.Matrices.FindAsync(request.InitialMatrixId);
             if(initialMatrix == null)
             {
                 return BadRequest();
             }
+            var resultPath = Path.Join(matricesDir, Path.GetRandomFileName());
+            var result = Matrix.EmptyWithMetadata(resultPath, initialMatrix.Metadata);
+            await db.Matrices.AddAsync(result);
             var task = new UserTask {
                 Name = request.Name,
                 Polynom = request.Polynom,
@@ -60,11 +79,13 @@ namespace Server.Controllers
                 InitialMatrixId = initialMatrix.Id,
                 UnscheduledColumns = new IntRange{
                     Start = 0,
-                    End = initialMatrix.Columns,
+                    End = initialMatrix.Metadata.Columns,
                 },
+                ResultMatrixId = result.Id,
+                Result = result,
             };
-            await context.UserTasks.AddAsync(task);
-            await context.SaveChangesAsync();
+            await db.UserTasks.AddAsync(task);
+            await db.SaveChangesAsync();
             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, new { id = task.Id });
         }
 
@@ -72,7 +93,7 @@ namespace Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(long id)
         {
-            var task = await context.UserTasks.FindAsync(id);
+            var task = await db.UserTasks.FindAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -82,8 +103,8 @@ namespace Server.Controllers
             {
                 System.IO.File.Delete(task.InitialMatrix.FilePath);
             }
-            context.UserTasks.Remove(task);
-            await context.SaveChangesAsync();
+            db.UserTasks.Remove(task);
+            await db.SaveChangesAsync();
             return NoContent();
         }
     }

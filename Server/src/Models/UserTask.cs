@@ -11,5 +11,6 @@ public class UserTask
     public required long InitialMatrixId { get; set; }
     public required Matrix InitialMatrix { get; set; }
     
-    public Matrix? Result { get; set; } = null;
+    public required long ResultMatrixId { get; set; }
+    public required Matrix Result { get; set; }
 }

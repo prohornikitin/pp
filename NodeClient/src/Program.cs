@@ -4,7 +4,8 @@ using MatrixFile;
 using ComputingNodeGen;
 using Grpc.Core;
 using ComputingNodeClient = ComputingNodeGen.ComputingNode.ComputingNodeClient;
-using Google.Protobuf.WellKnownTypes;
+
+namespace NodeClient;
 internal class Program
 {
     private static readonly string matricesDir = "matricesTemporary";
@@ -22,7 +23,7 @@ internal class Program
                 try
                 {
                     task = await client.GetTaskAsync(new GetTaskRequest());
-                    Console.WriteLine("task found");
+                    Console.WriteLine($"task {task.TaskId} found");
                 }
                 catch(RpcException e)
                 {
@@ -33,7 +34,6 @@ internal class Program
                     await Task.Delay(5000);
                     continue;
                 }
-                
 
                 var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
                 var result = await Task.Run(()=>ProcessTask(task, matrix));
@@ -48,7 +48,6 @@ internal class Program
         }
         
     }
-    
 
     private static async Task SubmitError(ComputingNodeClient client, long taskId, string errorDescription)
     {
@@ -60,7 +59,10 @@ internal class Program
 
     private static async Task<Matrix> GetInitialMatrix(ComputingNodeClient client, long matrixId)
     {
-        var initialMatrixPath = Path.Join(matricesDir, "initial.bin");
+        var initialMatrixPath = Path.Join(matricesDir, $"{matrixId}.bin");
+        if(File.Exists(initialMatrixPath)) {
+            return new Matrix(initialMatrixPath);
+        }
         using (var initialMatrixFile = File.OpenWrite(initialMatrixPath))
         {
             var response = client.GetInitialMatrix(new GetInitialMatrixRequest {
@@ -81,7 +83,7 @@ internal class Program
         using var call = client.SubmitResult();
         const int sizeOfBuffer = 24;
         var buffer = new byte[sizeOfBuffer];
-        using (var data = result.OpenFile()) {
+        using (var data = result.GetData()) {
             for (int i = 0; i < ((data.Length + sizeOfBuffer)/ sizeOfBuffer); ++i)
             {
                 await data.ReadAsync(buffer);
@@ -109,6 +111,4 @@ internal class Program
         }
         return result;
     }
-
-
 }

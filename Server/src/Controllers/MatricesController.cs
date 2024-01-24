@@ -22,7 +22,7 @@ public class MatricesController : ControllerBase
 
     // GET: api/Matrices
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Matrix>>> GetMatrix()
+    public async Task<ActionResult<IEnumerable<Matrix>>> GetMatricesList()
     {
         return await context.Matrices.ToListAsync();
     }
@@ -55,11 +55,11 @@ public class MatricesController : ControllerBase
         using var file = System.IO.File.OpenRead(path);
         var matrix = new Matrix() { 
             FilePath = path,
-            Columns = Metadata.ReadFrom(file).Columns,
+            Metadata = Metadata.ReadFrom(file),
         };
         await context.Matrices.AddAsync(matrix);
         await context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetMatrix), new { id = matrix.Id }, new { id = matrix.Id });
+        return CreatedAtAction(nameof(GetMatricesList), new { id = matrix.Id }, new { id = matrix.Id });
     }
 
     // DELETE: api/Matrices/5

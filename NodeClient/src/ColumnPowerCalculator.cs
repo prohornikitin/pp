@@ -1,9 +1,9 @@
-using System.Xml;
 using MatrixFile;
 using MatrixFile.Bytes;
 using static System.Linq.Enumerable;
-using static Utils;
+using static NodeClient.Utils;
 
+namespace NodeClient;
 public class ColumnPowerCalculator {
     IDictionary<int, FileStream> alreadyCalculatedPowers = new Dictionary<int, FileStream>();
 

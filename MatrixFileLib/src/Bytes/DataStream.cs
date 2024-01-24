@@ -56,7 +56,7 @@ public class DataStream : ItemsStream
     DataStream(FileStream src, Metadata metadata) {
         this.src = src;
         this.metadata = metadata;
-        itemsStart = Metadata.size;
+        itemsStart = Metadata.Size;
         Position = 0;
     }
 
@@ -73,6 +73,11 @@ public class DataStream : ItemsStream
         }
         if (origin == SeekOrigin.End) 
         {
+            if (offset > 0 || offset < -Length)
+            {
+                throw new IndexOutOfRangeException("Outside of the matrix data");
+            }
+            _position = Length - offset;
             Seek(Length - offset, SeekOrigin.End);
         }
         if (origin == SeekOrigin.Current)

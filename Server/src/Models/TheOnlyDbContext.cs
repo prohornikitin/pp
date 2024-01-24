@@ -23,6 +23,10 @@ public class TheOnlyDbContext : DbContext
         modelBuilder.Entity<UserTask>()
             .HasOne(t => t.Result)
             .WithMany()
-            .HasForeignKey("ResultId");
+            .HasForeignKey(t => t.ResultMatrixId);
+        modelBuilder.Entity<NodeTask>()
+            .HasOne(t => t.UserTask)
+            .WithMany()
+            .HasForeignKey(t => t.UserTaskId);
     }
 }
