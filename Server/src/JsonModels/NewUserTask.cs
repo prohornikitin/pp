@@ -1,6 +1,6 @@
 using Server.Models;
 
-namespace Server.ViewModels;
+namespace Server.JsonModels;
 
 public class NewUserTask
 {

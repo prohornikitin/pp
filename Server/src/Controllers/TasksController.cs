@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
-using Server.ViewModels;
+using Server.JsonModels;
 using UserTask = Server.Models.UserTask;
 
 
-namespace Server.src.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,9 +23,10 @@ namespace Server.src.Controllers
         {
             var db = await context.UserTasks.Include(t=>t.InitialMatrix).ToListAsync();
             var converted = db.Select(t => new UserTaskMinimalInfo() {
+                Id = t.Id,
                 Name = t.Name,
                 Polynom = t.Polynom,
-                InitialMatrixId = t.InitialMatrix.Id,
+                Status = t.State,
             });
             return converted.ToList();
         }

@@ -5,7 +5,7 @@ using MatrixFile;
 using Matrix = Server.Models.Matrix;
 
 
-namespace Server.src.Controllers;
+namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

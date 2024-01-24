@@ -4,7 +4,7 @@ using Google.Protobuf;
 using Server.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Services;
+namespace Server.GrpcServices;
 
 public class ComputingNodeService : ComputingNode.ComputingNodeBase
 {
