@@ -4,7 +4,7 @@ public class UserTask
 {
     public long Id { get; set; }
     public required string Name { get; set; }
-    public UserTaskState State { get; set; } = UserTaskState.WorkInProgress;
+    public TaskState State { get; set; } = TaskState.WorkInProgress;
     public required IEnumerable<PolynomPart> Polynom { get; set; } = new List<PolynomPart>();
     public required IntRange UnscheduledColumns { get; set; }
 

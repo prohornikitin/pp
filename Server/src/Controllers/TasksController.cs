@@ -4,6 +4,7 @@ using Server.Models;
 using Server.ViewModels;
 using UserTask = Server.Models.UserTask;
 
+
 namespace Server.src.Controllers
 {
     [Route("api/[controller]")]
@@ -11,7 +12,6 @@ namespace Server.src.Controllers
     public class TasksController : ControllerBase
     {
         private readonly TheOnlyDbContext context;
-
         public TasksController(TheOnlyDbContext context)
         {
             this.context = context;
@@ -77,7 +77,7 @@ namespace Server.src.Controllers
                 return NotFound();
             }
 
-            if (task.State == UserTaskState.ResultReady)
+            if (task.State == TaskState.ResultReady)
             {
                 System.IO.File.Delete(task.InitialMatrix.FilePath);
             }

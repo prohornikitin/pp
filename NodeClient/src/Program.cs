@@ -3,43 +3,65 @@ using Grpc.Net.Client;
 using MatrixFile;
 using ComputingNodeGen;
 using Grpc.Core;
-
+using ComputingNodeClient = ComputingNodeGen.ComputingNode.ComputingNodeClient;
+using Google.Protobuf.WellKnownTypes;
 internal class Program
 {
+    private static readonly string matricesDir = "matricesTemporary";
     private static async Task Main()
     {
+        Directory.CreateDirectory(matricesDir);
+
         var channel = GrpcChannel.ForAddress("http://localhost:5113");
-        var client = new ComputingNode.ComputingNodeClient(channel);
-        for(int i = 0; i < 100000; ++i) 
+        var client = new ComputingNodeClient(channel);
+        GetTaskResponse? task = null;
+        try
         {
-            GetTaskResponse? task = null;
-            try
+            while(true)
             {
-                task = await client.GetTaskAsync(new GetTaskRequest());
-            }
-            catch(RpcException e)
-            {
-                if(e.Status.StatusCode != StatusCode.NotFound)
+                try
                 {
-                    throw;
+                    task = await client.GetTaskAsync(new GetTaskRequest());
+                    Console.WriteLine("task found");
                 }
-                Console.WriteLine("task not found");
-                await Task.Delay(5000);
+                catch(RpcException e)
+                {
+                    if(e.Status.StatusCode != StatusCode.NotFound)
+                    {
+                        throw;
+                    }
+                    await Task.Delay(5000);
+                    continue;
+                }
+                
+
+                var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
+                var result = await Task.Run(()=>ProcessTask(task, matrix));
+                await SubmitResult(client, result, task.TaskId);
+                Console.WriteLine("Ok");
             }
-            if(task == null)
-            {
-                continue;
+        } catch (Exception e) {
+            if (task != null) {
+                await SubmitError(client, task.TaskId, e.Message);
             }
-            var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
-            var result = await Task.Run(()=>ProcessTask(task, matrix));
-            await SubmitResult(client, result, task.TaskId);
-            Console.WriteLine("Ok");
+            throw;
         }
+        
+    }
+    
+
+    private static async Task SubmitError(ComputingNodeClient client, long taskId, string errorDescription)
+    {
+        await client.ReportNodeErrorAsync(new ReportNodeErrorRequest {
+            TaskId = taskId,
+            Description = errorDescription,
+        });
     }
 
-    private static async Task<Matrix> GetInitialMatrix(ComputingNode.ComputingNodeClient client, long matrixId)
+    private static async Task<Matrix> GetInitialMatrix(ComputingNodeClient client, long matrixId)
     {
-        using (var initialMatrixFile = File.OpenWrite("initial.bin"))
+        var initialMatrixPath = Path.Join(matricesDir, "initial.bin");
+        using (var initialMatrixFile = File.OpenWrite(initialMatrixPath))
         {
             var response = client.GetInitialMatrix(new GetInitialMatrixRequest {
                 MatrixId = matrixId
@@ -51,10 +73,10 @@ internal class Program
                 await Task.Run(() => chunk.WriteTo(initialMatrixFile));
             }
         }
-        return new Matrix("initial.bin");
+        return new Matrix(initialMatrixPath);
     }
 
-    private static async Task SubmitResult(ComputingNode.ComputingNodeClient client, Matrix result, long taskId)
+    private static async Task SubmitResult(ComputingNodeClient client, Matrix result, long taskId)
     {
         using var call = client.SubmitResult();
         const int sizeOfBuffer = 24;
@@ -75,9 +97,10 @@ internal class Program
 
     private static Matrix ProcessTask(GetTaskResponse task, Matrix initialMatrix)
     {
+        var resultPath = Path.Join(matricesDir, "output.bin");
         var calculator = new ColumnPowerCalculator(initialMatrix, task.Column);
         var resultMetadata = initialMatrix.Metadata with {Columns = 1};
-        var result = new Matrix("output.bin", resultMetadata, FileAccess.ReadWrite);
+        var result = new Matrix(resultPath, resultMetadata, FileAccess.ReadWrite);
         foreach (var polynomPart in task.PolynomParts)
         {
             var power = polynomPart.Power;

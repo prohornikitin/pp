@@ -11,11 +11,15 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
     const int maxBytesPerChunk = 24;
     byte[] buffer = new byte[maxBytesPerChunk];
     private readonly TheOnlyDbContext db;
+    private readonly string resultsDir;
     public ComputingNodeService(
-        TheOnlyDbContext dbContext
+        TheOnlyDbContext dbContext,
+        IConfiguration configuration
     )
     {
-        this.db = dbContext;
+        db = dbContext;
+        resultsDir = configuration["Custom:MatricesDirectory"]!;
+        Directory.CreateDirectory(resultsDir);
     }
 
     private async Task<FileStream?> GetMatrixFileById(long id) {
@@ -49,18 +53,26 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         }
     }
 
-    public override async Task<GetTaskResponse> GetTask(
-        GetTaskRequest request,
-        ServerCallContext context)
+    private async Task<NodeTask?> ScheduleNextTask()
     {
-        var userTask = await db.UserTasks.FirstOrDefaultAsync(
-            t => t.UnscheduledColumns.Start != t.UnscheduledColumns.End
+        var previouslyFailedNodeTask = await db.NodeTasks.Include(t => t.UserTask).FirstOrDefaultAsync(
+            t => t.State == TaskState.Fail
+        );
+        if (previouslyFailedNodeTask != null)
+        {
+            previouslyFailedNodeTask.State = TaskState.WorkInProgress;
+            return previouslyFailedNodeTask;
+        }
+
+        var userTask = await db.UserTasks.Include(t => t.InitialMatrix).FirstOrDefaultAsync(
+            //manual check for Empty range because linq doesn't support custom methods
+            t => t.UnscheduledColumns.Start != t.UnscheduledColumns.End 
         );
         if (userTask == null)
         {
-            context.Status = new Status(StatusCode.NotFound, "task not found");
-            return new GetTaskResponse() {};
+            return null;
         }
+        
         var column = userTask.UnscheduledColumns.End-1;
         userTask.UnscheduledColumns.End--;
         await db.SaveChangesAsync();
@@ -70,12 +82,25 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         };
         await db.AddAsync(nodeTask);
         await db.SaveChangesAsync();
+        return nodeTask;
+    }
+
+    public override async Task<GetTaskResponse> GetTask(
+        GetTaskRequest request,
+        ServerCallContext context)
+    {
+        var task = await ScheduleNextTask();
+        if (task == null)
+        {
+            context.Status = new Status(StatusCode.NotFound, "task not found");
+            return new GetTaskResponse() {};
+        }
         var response = new GetTaskResponse{
-            InitialMatrixId = userTask.InitialMatrixId,
-            Column = nodeTask.column,
-            TaskId = nodeTask.Id,
+            InitialMatrixId = task.UserTask.InitialMatrixId,
+            Column = task.column,
+            TaskId = task.Id,
         };
-        response.PolynomParts.AddRange(userTask.Polynom.Select(
+        response.PolynomParts.AddRange(task.UserTask.Polynom.Select(
             (p)=> new ComputingNodeGen.PolynomPart {
                 Coefficient = p.Coefficient,
                 Power = p.Power,
@@ -108,12 +133,27 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
             return new Empty{};
         }
         
-        var resultPath = $"matrices/results/task_{nodeTaskId}.bin";
+        var resultPath = Path.Join(resultsDir, $"task_{nodeTaskId}.bin");
         File.Move(temporaryPath, resultPath, overwrite: true);
         var resultMatrix = Matrix.WithExistingFile(resultPath);
         await db.Matrices.AddAsync(resultMatrix);
         nodeTask.result = resultMatrix;
         db.NodeTasks.Update(nodeTask);
+        await db.SaveChangesAsync();
+        return new Empty {};
+    }
+
+    public override async Task<Empty> ReportNodeError(
+        ReportNodeErrorRequest request,
+        ServerCallContext context)
+    {
+        var task = await db.NodeTasks.FindAsync(request.TaskId);
+        if(task == null)
+        {
+            context.Status = new Status(StatusCode.NotFound, "task not found");
+            return new Empty{};
+        }
+        task.State = TaskState.Fail;
         await db.SaveChangesAsync();
         return new Empty {};
     }
