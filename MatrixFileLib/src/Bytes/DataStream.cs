@@ -6,7 +6,7 @@ public class DataStream : ItemsStream
     private readonly long itemsStart;
     private Stream src;
     private Metadata metadata;
-    public Metadata Metadata => metadata with {};
+    public Metadata Metadata => metadata with { };
 
     public int Rows => metadata.Rows;
     public int Columns => metadata.Columns;
@@ -22,9 +22,10 @@ public class DataStream : ItemsStream
     public override long Position
     {
         get => _position;
-        set 
+        set
         {
-            if(value != _position) {
+            if (value != _position)
+            {
                 _position = value;
                 Seek(itemsStart + value, SeekOrigin.Begin);
             }
@@ -50,10 +51,11 @@ public class DataStream : ItemsStream
 
     public DataStream(FileStream src) : this(src, Metadata.ReadFrom(src))
     {
-        
+
     }
 
-    DataStream(FileStream src, Metadata metadata) {
+    DataStream(FileStream src, Metadata metadata)
+    {
         this.src = src;
         this.metadata = metadata;
         itemsStart = Metadata.Size;
@@ -71,7 +73,7 @@ public class DataStream : ItemsStream
             _position = offset;
             return src.Seek(itemsStart + offset, SeekOrigin.Begin);
         }
-        if (origin == SeekOrigin.End) 
+        if (origin == SeekOrigin.End)
         {
             if (offset > 0 || offset < -Length)
             {
@@ -95,9 +97,10 @@ public class DataStream : ItemsStream
     public override void Flush() => src.Flush();
     public override void SetLength(long value) => throw new NotImplementedException();
 
-    protected override void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing)
+    {
         base.Dispose(disposing);
-        if(disposing)
+        if (disposing)
         {
             src.Dispose();
         }

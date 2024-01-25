@@ -50,8 +50,8 @@ public class Matrix {
     }
 
     public ItemsStream GetData() => new DataStream(OpenFile());
-    public ItemsStream GetRow(int row) => new RowStream(OpenFile(), row);
-    public ItemsStream GetColumn(int column) => new ColumnStream(OpenFile(), column);
+    public ItemsStream GetRow(int row) => new RowStream(OpenFile(), row, metadata);
+    public ItemsStream GetColumn(int column) => new ColumnStream(OpenFile(), column, metadata);
 
     public void Add(Matrix other)
     {
