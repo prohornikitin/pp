@@ -22,7 +22,6 @@ message GetInitialMatrixRequest {
   int64 matrixId = 1;
 }
 
-//Without metadata!
 message MatrixItems {
   bytes items = 1;
 }
