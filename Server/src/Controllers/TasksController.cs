@@ -51,7 +51,7 @@ namespace Server.Controllers
             var task = await db.UserTasks
                 .Include(t => t.Result)
                 .SingleOrDefaultAsync(t => t.Id == taskId);
-            if (task == null)
+            if (task == null || task.State != TaskState.ResultReady)
             {
                 return NotFound();
             }
@@ -69,7 +69,7 @@ namespace Server.Controllers
             {
                 return BadRequest();
             }
-            var resultPath = Path.Join(matricesDir, Path.GetRandomFileName());
+            var resultPath = Path.Join(matricesDir, $"{Guid.NewGuid()}.bin");
             var result = Matrix.EmptyWithMetadata(resultPath, initialMatrix.Metadata);
             await db.Matrices.AddAsync(result);
             var task = new UserTask {

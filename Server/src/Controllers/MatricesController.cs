@@ -47,7 +47,7 @@ public class MatricesController : ControllerBase
     [Consumes("application/octet-stream")]
     public async Task<ActionResult> PostBinary()
     {
-        var path = Path.Join(matricesDir, $"{Guid.NewGuid()}.txt");
+        var path = Path.Join(matricesDir, $"{Guid.NewGuid()}.bin");
         using(Stream from = Request.Body, to = System.IO.File.OpenWrite(path))
         {
             await from.CopyToAsync(to);
