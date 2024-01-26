@@ -1,71 +1,91 @@
+using ComputingNodeGen;
 using MatrixFile;
-using MatrixFile.Bytes;
 using static System.Linq.Enumerable;
 using static NodeClient.Utils;
 
 namespace NodeClient;
-public class ColumnPowerCalculator {
-    IDictionary<int, FileStream> alreadyCalculatedPowers = new Dictionary<int, FileStream>();
-
+public class ColumnPolynomCalculator : IDisposable{
+    private Matrix lastCalcedColumn;
+    private IEnumerable<PolynomPart> polynomParts;
     private Matrix initialMatrix;
     private int column;
+    private int lastCalcedPower = 1;
 
-
-    public ColumnPowerCalculator(Matrix initialMatrix, int column)
+    public ColumnPolynomCalculator(Matrix initialMatrix, int column, IEnumerable<PolynomPart> polynomParts)
     {
         this.initialMatrix = initialMatrix;
         this.column = column;
-    }
+        this.polynomParts = polynomParts;
 
-
-    public Matrix CalcPower(int neededPower)
-    {
-        var initialMetadata = initialMatrix.Metadata;
         var bufferMetadata = new Metadata
         {
-            Rows = initialMetadata.Rows,
+            Rows = initialMatrix.Rows,
             Columns = 1,
         };
 
-        var bufferFilePaths = new string[] {Path.GetTempFileName(), Path.GetTempFileName()};
-        var bufferColumns = bufferFilePaths.Select(path =>
-            {
-                var file = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-                bufferMetadata.WriteTo(file);
-                file.Seek(0, SeekOrigin.Begin);
-                return new ColumnStream(file, 0);
-            }
-        ).ToArray();
-        using (var initialColumn = initialMatrix.GetColumn(column))
+        lastCalcedColumn = new Matrix(Path.GetTempFileName(), bufferMetadata, FileAccess.ReadWrite);
+
+        using (ItemsStream initialColumn = initialMatrix.GetColumn(column), lastCalcedStream = lastCalcedColumn.GetColumn(0))
         {
-            initialColumn.CopyTo(bufferColumns[0]);
+            initialColumn.CopyTo(lastCalcedStream);
         }
-        using(var initialData = initialMatrix.GetData()) {
-            foreach (var power in Range(1, neededPower-1))
+    }
+
+    
+    public Matrix CalcPolynom(string resultPath)
+    {
+        var resultMetadata = initialMatrix.Metadata with {Columns = 1};
+        var result = new Matrix(resultPath, resultMetadata, FileAccess.ReadWrite);
+        foreach (var polynomPart in polynomParts)
+        {
+            var power = polynomPart.Power;
+            var matrix = CalcPower(power) * polynomPart.Coefficient;
+            result.Add(matrix);
+        }
+        return result;
+    }
+    
+    private Matrix CalcPower(int power)
+    {
+        if (power < lastCalcedPower)
+        {
+            throw new ArgumentException("power cannot be less than lastCalcedPower (maybe polynomParts aren't sored?)");
+        }
+
+        for (int i = lastCalcedPower; i < power; i++)
+        {
+            CalcNextPower();
+        }
+
+        return lastCalcedColumn;
+    }
+
+    private Matrix CalcNextPower()
+    {
+        var tempMatrix = new Matrix(Path.GetTempFileName(), lastCalcedColumn.Metadata, FileAccess.ReadWrite);
+        using(ItemsStream initialData = initialMatrix.GetData(), lastCalcedStream = lastCalcedColumn.GetColumn(0), tempStream = tempMatrix.GetColumn(0)) {
+            foreach (var i in Range(0, initialMatrix.Rows))
             {
-                initialData.Seek(0, SeekOrigin.Begin);
-                foreach (var i in Range(0, initialMetadata.Rows))
+                int sum = 0;
+                lastCalcedStream.SeekItem(0, SeekOrigin.Begin);
+                foreach (var j in Range(0, initialMatrix.Columns))
                 {
-                    int sum = 0;
-                    bufferColumns[0].SeekItem(0, SeekOrigin.Begin);
-                    foreach (var j in Range(0, initialMetadata.Columns))
-                    {
-                        int a = bufferColumns[0].ReadItem();
-                        int b = initialData.ReadItem();
-                        sum += a*b;
-                    }
-                    bufferColumns[1].WriteItem(sum);
+                    int a = lastCalcedStream.ReadItem();
+                    int b = initialData.ReadItem();
+                    sum += a*b;
                 }
-                Swap(ref bufferColumns[0], ref bufferColumns[1]);
-                Swap(ref bufferFilePaths[0], ref bufferFilePaths[1]);
+                tempStream.WriteItem(sum);
             }
         }
-        alreadyCalculatedPowers.Add(neededPower, File.OpenRead(bufferFilePaths[0]));
-        foreach (var buffer in bufferColumns)
-        {
-            buffer.Dispose();
-        }
-        File.Delete(bufferFilePaths[1]);
-        return new Matrix(bufferFilePaths[0], FileAccess.Read);
+        Swap(ref tempMatrix, ref lastCalcedColumn);
+        File.Delete(tempMatrix.FilePath);
+
+        lastCalcedPower++;
+        return lastCalcedColumn;
+    }
+
+    public void Dispose()
+    {  
+        File.Delete(lastCalcedColumn.FilePath);
     }
 }

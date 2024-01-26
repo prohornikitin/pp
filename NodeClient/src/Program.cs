@@ -36,6 +36,7 @@ internal class Program
                 }
 
                 var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
+
                 var result = await Task.Run(()=>ProcessTask(task, matrix));
                 await SubmitResult(client, result, task.TaskId);
                 Console.WriteLine("Ok");
@@ -100,15 +101,7 @@ internal class Program
     private static Matrix ProcessTask(GetTaskResponse task, Matrix initialMatrix)
     {
         var resultPath = Path.Join(matricesDir, "output.bin");
-        var calculator = new ColumnPowerCalculator(initialMatrix, task.Column);
-        var resultMetadata = initialMatrix.Metadata with {Columns = 1};
-        var result = new Matrix(resultPath, resultMetadata, FileAccess.ReadWrite);
-        foreach (var polynomPart in task.PolynomParts)
-        {
-            var power = polynomPart.Power;
-            var matrix = calculator.CalcPower(power) * polynomPart.Coefficient;
-            result.Add(matrix);
-        }
-        return result;
+        var calculator = new ColumnPolynomCalculator(initialMatrix, task.Column, task.PolynomParts);
+        return calculator.CalcPolynom(resultPath);
     }
 }

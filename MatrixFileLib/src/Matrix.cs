@@ -44,12 +44,12 @@ public class Matrix {
         {
             FileAccess.Read => File.OpenRead(FilePath),
             FileAccess.Write => File.OpenWrite(FilePath),
-            FileAccess.ReadWrite => new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read),
+            FileAccess.ReadWrite => new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None),
             _ => throw new UnreachableException(),
         };
     }
 
-    public ItemsStream GetData() => new DataStream(OpenFile());
+    public ItemsStream GetData() => new DataStream(OpenFile(), metadata);
     public ItemsStream GetRow(int row) => new RowStream(OpenFile(), row, metadata);
     public ItemsStream GetColumn(int column) => new ColumnStream(OpenFile(), column, metadata);
 

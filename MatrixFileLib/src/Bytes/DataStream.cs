@@ -24,11 +24,9 @@ public class DataStream : ItemsStream
         get => _position;
         set
         {
-            if (value != _position)
-            {
-                _position = value;
-                Seek(itemsStart + value, SeekOrigin.Begin);
-            }
+            _position = value;
+            Seek(value, SeekOrigin.Begin);
+
         }
     }
     public override bool CanSeek => src.CanSeek;
@@ -54,7 +52,7 @@ public class DataStream : ItemsStream
 
     }
 
-    DataStream(FileStream src, Metadata metadata)
+    public DataStream(FileStream src, Metadata metadata)
     {
         this.src = src;
         this.metadata = metadata;

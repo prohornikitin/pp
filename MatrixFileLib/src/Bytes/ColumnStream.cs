@@ -8,7 +8,8 @@ public class ColumnStream : RectangleBlockStream
         new Rectangle(
             new Point(column, 0),
             new Size(1, metadata.Rows)
-        )
+        ),
+        metadata
     )
     {
     }

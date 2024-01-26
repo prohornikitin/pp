@@ -110,7 +110,7 @@ public class RectangleBlockStream : ItemsStream
         {
             throw new ArgumentOutOfRangeException($"rectangle {rectangle} goes beyong the matrix");
         }
-        data = new DataStream(src);
+        data = new DataStream(src, metadata);
         Position = 0;
     }
 
