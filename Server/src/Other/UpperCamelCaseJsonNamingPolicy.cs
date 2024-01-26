@@ -1,7 +1,7 @@
 using System.Text.Json;
 
 namespace Server.Other;
-public class UpperCamelCaseJsonNamingPolicy : JsonNamingPolicy
+public class PascalCaseJsonNamingPolicy : JsonNamingPolicy
 {
     public override string ConvertName(string name)
     {

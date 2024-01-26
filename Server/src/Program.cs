@@ -13,7 +13,7 @@ builder
     options
         .JsonSerializerOptions
         .Converters
-        .Add(new JsonStringEnumConverter(new UpperCamelCaseJsonNamingPolicy(), allowIntegerValues: false));
+        .Add(new JsonStringEnumConverter(new PascalCaseJsonNamingPolicy(), allowIntegerValues: false));
 })
 .Services.AddDbContext<TheOnlyDbContext>(opt => opt.UseInMemoryDatabase("db"));
 var app = builder.Build();
