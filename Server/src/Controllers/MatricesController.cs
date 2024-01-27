@@ -53,9 +53,10 @@ public class MatricesController : ControllerBase
             await from.CopyToAsync(to);
         }
         using var file = System.IO.File.OpenRead(path);
+        var matrixFile = new MatrixFile.Matrix(path);
         var matrix = new Matrix() { 
-            FilePath = path,
-            Metadata = Metadata.ReadFrom(file),
+            FilePath = matrixFile.FilePath,
+            Metadata = matrixFile.Metadata,
         };
         await context.Matrices.AddAsync(matrix);
         await context.SaveChangesAsync();
