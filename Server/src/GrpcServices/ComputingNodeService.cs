@@ -155,7 +155,6 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         {
             return new Empty {};
         }
-        var debugRemains = db.NodeTasks.Where(t => t.UserTaskId == nodeTask.UserTaskId).SingleOrDefault();
         var remainsWorking = await db.NodeTasks
             .Where(t => t.UserTaskId == nodeTask.UserTaskId)
             .CountAsync();
