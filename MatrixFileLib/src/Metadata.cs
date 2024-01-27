@@ -14,7 +14,7 @@ public readonly record struct Metadata(int Rows, int Columns)
         }
     }
 
-    internal static Metadata ReadFrom(Stream source)
+    public static Metadata ReadFrom(Stream source)
     {
         source.Seek(0, SeekOrigin.Begin);
         int rows, columns;
@@ -34,7 +34,7 @@ public readonly record struct Metadata(int Rows, int Columns)
         }
     }
 
-    internal void WriteTo(Stream destination) {
+    public void WriteTo(Stream destination) {
         destination.Seek(0, SeekOrigin.Begin);
         var writer = new BinaryWriter(destination);
         writer.Write(signature);

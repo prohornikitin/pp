@@ -45,7 +45,7 @@ public class Matrix {
         {
             FileAccess.Read => File.OpenRead(FilePath),
             FileAccess.Write => File.OpenWrite(FilePath),
-            FileAccess.ReadWrite => new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None),
+            FileAccess.ReadWrite => new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite),
             _ => throw new UnreachableException(),
         };
     }

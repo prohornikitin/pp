@@ -54,6 +54,7 @@ public class DataStream : ItemsStream
     public DataStream(FileStream src, Metadata metadata)
     {
         this.src = src;
+        // this.src = new BufferedStream(src, 4096 * 32);
         this.metadata = metadata;
         itemsStart = Metadata.Size;
         Position = 0;
@@ -92,7 +93,7 @@ public class DataStream : ItemsStream
     }
 
     public override void Flush() => src.Flush();
-    public override void SetLength(long value) => throw new NotImplementedException();
+    public override void SetLength(long value) => SetLength(itemsStart + value);
 
     protected override void Dispose(bool disposing)
     {
