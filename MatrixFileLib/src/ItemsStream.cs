@@ -20,7 +20,7 @@ public abstract class ItemsStream : Stream {
         return BitConverter.ToInt32(itemBuffer);
     }
 
-    public async void WriteItemAsync(int item)
+    public async Task WriteItemAsync(int item)
     {
         await WriteAsync(BitConverter.GetBytes(item), 0, itemSize);
     }

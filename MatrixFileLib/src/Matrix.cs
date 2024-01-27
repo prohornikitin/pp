@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Drawing;
 using MatrixFile.Bytes;
 
 namespace MatrixFile;
@@ -20,17 +21,17 @@ public class Matrix {
         }
     }
 
-    public Matrix(string filePath, Metadata metadata, FileAccess fileAccess = FileAccess.Write, bool noMetadataWrite = false)
+    public Matrix(string filePath, Metadata metadata, FileAccess fileAccess = FileAccess.Write, bool noFill = false)
     {
         FilePath = filePath;
         this.metadata = metadata;
         this.fileAccess = fileAccess;
-        if(noMetadataWrite) {
-            return;
-        }
         using (var file = File.OpenWrite(filePath))
         {
             metadata.WriteTo(file);
+            if(noFill) {
+                return;
+            }
             for(long i = 0; i < metadata.Columns * metadata.Rows * sizeof(int); ++i)
             {
                 file.WriteByte(0);
@@ -52,7 +53,7 @@ public class Matrix {
     public ItemsStream GetData() => new DataStream(OpenFile(), metadata);
     public ItemsStream GetRow(int row) => new RowStream(OpenFile(), row, metadata);
     public ItemsStream GetColumn(int column) => new ColumnStream(OpenFile(), column, metadata);
-
+    public RectangleBlockStream GetRectangleBlock(Rectangle rectangle) => new RectangleBlockStream(OpenFile(), rectangle, metadata);
     public void Add(Matrix other)
     {
         //TODO: optimize with buffer;

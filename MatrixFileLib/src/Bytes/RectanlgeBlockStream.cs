@@ -5,16 +5,24 @@ namespace MatrixFile.Bytes;
 public class RectangleBlockStream : ItemsStream
 {
     private Stream data;
-    private readonly Rectangle rectangle;
+    private Rectangle _rectangle;
+    public Rectangle Rectangle {
+        get => _rectangle;
+        set
+        {
+            _rectangle = value;
+            Seek(0, SeekOrigin.Begin);
+        }
+    }
     private readonly Metadata metadata;
 
-    public Size Size => rectangle.Size;
+    public Size Size => Rectangle.Size;
 
     public override long Length
     {
         get
         {
-            return rectangle.Height * rectangle.Width * itemSize;
+            return Rectangle.Height * Rectangle.Width * itemSize;
         }
     }
     private long _position = 0;
@@ -34,13 +42,14 @@ public class RectangleBlockStream : ItemsStream
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (metadata.Columns == 1 || rectangle.Width == metadata.Columns)
+        if (metadata.Columns == 1 || Rectangle.Width == metadata.Columns)
         {
             data.Write(buffer, offset, count);
+            _position += count;
             return;
         }
         count = (int)long.Min(count, Length - Position);
-        int bytesInRow = rectangle.Width * itemSize;
+        int bytesInRow = Rectangle.Width * itemSize;
 
         int bytesBeforeLineBreak = (int)(bytesInRow - Position % bytesInRow) % bytesInRow;
         data.Write(buffer, offset, bytesBeforeLineBreak);
@@ -64,14 +73,16 @@ public class RectangleBlockStream : ItemsStream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (metadata.Columns == 1 || rectangle.Width == metadata.Columns)
+        if (metadata.Columns == 1 || Rectangle.Width == metadata.Columns)
         {
-            return data.Read(buffer, offset, count);
+            int read = data.Read(buffer, offset, count);
+            _position += read;
+            return read;
         }
         count = (int)long.Min(count, Length - Position);
-        int bytesInRow = rectangle.Width * itemSize;
+        int bytesInRow = Rectangle.Width * itemSize;
 
-        int bytesBeforeLineBreak = (int)(bytesInRow - Position % bytesInRow) % bytesInRow;
+        int bytesBeforeLineBreak = int.Min((int)((bytesInRow - Position % bytesInRow) % bytesInRow), count);
         int readBeforeLineBreak = data.Read(buffer, offset, bytesBeforeLineBreak);
         count -= bytesBeforeLineBreak;
         Position += readBeforeLineBreak;
@@ -99,7 +110,7 @@ public class RectangleBlockStream : ItemsStream
     }
     public RectangleBlockStream(FileStream src, Rectangle rectangle, Metadata metadata)
     {
-        this.rectangle = rectangle;
+        this._rectangle = rectangle;
         this.metadata = metadata;
         var fullMatrix = new Rectangle(new Point(0, 0), new Size(metadata.Columns, metadata.Rows));
         if (rectangle.IsEmpty)
@@ -122,8 +133,8 @@ public class RectangleBlockStream : ItemsStream
             {
                 throw new IndexOutOfRangeException($"{offset} is out of rectangle");
             }
-            long row = offset / (rectangle.Width * itemSize) + rectangle.Top;
-            long column = offset % (rectangle.Width * itemSize) / itemSize + rectangle.Left;
+            long row = offset / (Rectangle.Width * itemSize) + Rectangle.Top;
+            long column = offset % (Rectangle.Width * itemSize) / itemSize + Rectangle.Left;
             long remains = offset % itemSize;
             long positionInItems = row * metadata.Width + column;
             long newPosition = positionInItems * itemSize + remains;

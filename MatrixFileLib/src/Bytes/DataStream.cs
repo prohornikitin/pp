@@ -26,7 +26,6 @@ public class DataStream : ItemsStream
         {
             _position = value;
             Seek(value, SeekOrigin.Begin);
-
         }
     }
     public override bool CanSeek => src.CanSeek;
