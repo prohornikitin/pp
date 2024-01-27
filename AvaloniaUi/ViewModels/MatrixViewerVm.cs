@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace AvaloniaUi.ViewModels;
 public partial class MatrixViewerVm : VmBase, IDisposable
 {
-    public ObservableCollection<ItemVm> Items {get; set;} = new();
+    public ObservableCollection<MatrixItemVm> Items {get; set;} = new();
     public ObservableCollection<int> data = new ObservableCollection<int>();
 
     private IMatrixSquareMovingWindow window = new NullMatrixMovingWindow(10);
@@ -22,27 +22,27 @@ public partial class MatrixViewerVm : VmBase, IDisposable
     public int leftColumn = 1;
 
     [RelayCommand]
-    private void MoveLeft()
+    private void MoveLeft(int delta=1)
     {
-        Move(dx: -1);
+        Move(dx: -delta);
     }
 
     [RelayCommand]
-    private void MoveRight()
+    private void MoveRight(int delta=1)
     {
-        Move(dx: 1);
+        Move(dx: delta);
     }
 
     [RelayCommand]
-    private void MoveUp()
+    private void MoveUp(int delta=1)
     {
-        Move(dy: -1);
+        Move(dy: -delta);
     }
 
     [RelayCommand]
-    private void MoveDown()
+    private void MoveDown(int delta=1)
     {
-        Move(dy: 1);
+        Move(dy: delta);
     }
 
     private void Move(int dx = 0, int dy = 0) {
@@ -73,7 +73,7 @@ public partial class MatrixViewerVm : VmBase, IDisposable
         window = src;
         UpdateDataFrom(window.GetWindowContent());
         data.CollectionChanged += OnDataChanged;
-        Items = new ObservableCollection<ItemVm>() {};
+        Items = new ObservableCollection<MatrixItemVm>() {};
         OnDataChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 
@@ -94,7 +94,7 @@ public partial class MatrixViewerVm : VmBase, IDisposable
         
         for (int i = Items.Count; i < window.SideLength+1; ++i)
         {
-            Items.Add(new ItemVm() {
+            Items.Add(new MatrixItemVm() {
                 Text = (LeftColumn + i - 1).ToString(),
                 Meaningfull = false,
             });
@@ -105,7 +105,7 @@ public partial class MatrixViewerVm : VmBase, IDisposable
         var minCount = int.Min(data.Count, oldCount);
         for (int i = 0; i < minCount; ++i)
         {
-            Items[GetItemsIndex(i)] = new ItemVm() {
+            Items[GetItemsIndex(i)] = new MatrixItemVm() {
                 Text = data[i].ToString(),
                 Meaningfull = true,
             };
@@ -121,12 +121,12 @@ public partial class MatrixViewerVm : VmBase, IDisposable
         {
             if(i % window.SideLength == 0)
             {
-                Items.Add(new ItemVm() {
+                Items.Add(new MatrixItemVm() {
                     Text = (TopRow + i / window.SideLength).ToString(),
                     Meaningfull = false,
                 });
             }
-            Items.Add(new ItemVm() {
+            Items.Add(new MatrixItemVm() {
                 Text = data[i].ToString(),
                 Meaningfull = true,
             });

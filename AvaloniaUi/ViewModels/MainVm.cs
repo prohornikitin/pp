@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -14,6 +15,8 @@ namespace AvaloniaUi.ViewModels;
 
 public partial class MainVm : VmBase
 {
+
+
     [ObservableProperty]
     public ObservableCollection<string> errorMessages = new ObservableCollection<string>();
 
@@ -28,9 +31,12 @@ public partial class MainVm : VmBase
         {
             throw new Exception("Is not a desktop application");
         }
-        generatorWindow.Closing += (sender, e) => desktop?.MainWindow?.Show();
-        desktop?.MainWindow?.Hide();
-        generatorWindow.Show();
+        if(desktop == null || desktop.MainWindow == null)
+        {
+            throw new UnreachableException();
+        }
+        generatorWindow.Closing += (sender, e) => desktop.MainWindow.Show();
+        desktop.MainWindow.Hide();
     }
 
 
@@ -50,7 +56,7 @@ public partial class MainVm : VmBase
                 throw new Exception("Is not a desktop application");
             }
             
-            var viewerWindow = new MatrixViewerWindow("matrix.bin");
+            var viewerWindow = new MatrixViewerWindow(file.Path.AbsolutePath);
             desktop?.MainWindow?.Hide();
             viewerWindow.Show();
             viewerWindow.Closing += (sender, e) => desktop?.MainWindow?.Show();

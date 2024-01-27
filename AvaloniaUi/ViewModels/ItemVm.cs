@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AvaloniaUi.ViewModels;
 
-public partial class ItemVm : VmBase
+public partial class MatrixItemVm : VmBase
 {
     [ObservableProperty]
     private string text = "";
@@ -15,7 +15,7 @@ public partial class ItemVm : VmBase
 
     public override bool Equals(object? obj)
     {
-        var objTyped = obj as ItemVm;
+        var objTyped = obj as MatrixItemVm;
         if (objTyped == null)
         {
             return false;

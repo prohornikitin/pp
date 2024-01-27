@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using AvaloniaUi.Models;
 using AvaloniaUi.ViewModels;
 using MatrixFile;
@@ -15,10 +16,19 @@ public partial class MatrixViewerWindow : Window
         DataContext = new MatrixViewerVm(new FileMatrixMovingWindow(new Matrix(fileName), 10));
     }
 
-    protected override void OnClosing(WindowClosingEventArgs e)
+    protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs change)
     {
+        base.OnPropertyChanged(change);
+        if (change.Property == DataContextProperty) {
+            var oldVm = change.OldValue as MatrixViewerVm;
+            oldVm?.Dispose();
+        }
+    }
+
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+        base.OnUnloaded(e);
         var vm = DataContext as MatrixViewerVm;
         vm?.Dispose();
-        base.OnClosing(e);
     }
 }

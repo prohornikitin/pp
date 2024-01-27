@@ -6,41 +6,54 @@
     xmlns:cc="using:AvaloniaUi.CustomControls"
     xmlns:vm="using:AvaloniaUi.ViewModels"
     xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    mc:Ignorable="d"
     x:Class="AvaloniaUi.Views.MatrixGeneratorWindow"
     Title="AvaloniaUi"
     x:CompileBindings="True"
     x:DataType="vm:MatrixGeneratorVm">
     <Grid 
         DockPanel.Dock="Top"
-        ColumnDefinitions="Auto,Auto" RowDefinitions="*,*,*,Auto"
-        ShowGridLines="True"
+        ColumnDefinitions="Auto,Auto" RowDefinitions="*,*,*,*"
         VerticalAlignment="Top">
         
-        <TextBlock 
+        <Label 
             Grid.Row="0" Grid.Column="0"
-            Margin="4">
+            Margin="4"
+            Target="ItemExpressionInput">
             Expression which defines matrix item at (i,j)
-        </TextBlock>
-        <TextBox Grid.Row="0" Grid.Column="1"
+        </Label>
+        <TextBox 
+            x:Name="ItemExpressionInput"
+            Grid.Row="0" Grid.Column="1"
             Margin="4"
             Text="{Binding ItemExpression, Mode=TwoWay}"/>
 
-        <TextBlock
+        <Label
             Grid.Row="1" Grid.Column="0"
-            Margin="4">
+            Margin="4"
+            Target="MatrixSideSizeInput">
             The size of the matrix side
-        </TextBlock>
+        </Label>
         <TextBox
+            x:Name="MatrixSideSizeInput"
             Grid.Row="1" Grid.Column="1"
             Margin="4"
             Text="{Binding MatrixSideSize, Mode=TwoWay}"/>
         
-        <Button 
+        <Button
             Grid.Row="2" Grid.ColumnSpan="2"
             Margin="4"
-            Command="{Binding GenerateCommand}">
+            Command="{Binding GenerateCommand}"
+            IsEnabled="{Binding !IsGenerating}">
             Generate
         </Button>
+        <ProgressBar
+                Grid.Row="3" Grid.ColumnSpan="2"
+                Margin="2 10"
+                Height="20"
+                IsVisible="{Binding IsGenerating}"
+                Minimum="0" Maximum="100"
+                Value="{Binding Progress}"
+                ShowProgressText="True"/>
     </Grid>
 </Window>

@@ -2,32 +2,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:cc="using:AvaloniaUi.CustomControls"
         xmlns:vm="using:AvaloniaUi.ViewModels"
         xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
         x:Class="AvaloniaUi.Views.MatrixViewerWindow"
         Title="AvaloniaUi"
-        x:CompileBindings="True"
+        
         x:DataType="vm:MatrixViewerVm">
     <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
         <Button
             Grid.Row="1" Grid.Column="0"
             Content="⮜"
-            Command="{Binding MoveLeftCommand}"/>
+            Command="{Binding MoveLeftCommand}"
+            ToolTip.Tip="Press `Shift + Left` to move 10x faster">
+            <Button.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </Button.CommandParameter>
+        </Button>
         <Button 
             Grid.Row="1" Grid.Column="2"
             Content="⮞"
-            Command="{Binding MoveRightCommand}"/>
+            Command="{Binding MoveRightCommand}"
+            ToolTip.Tip="Press `Shift + Right` to move 10x faster">
+            <Button.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </Button.CommandParameter>
+        </Button>
         <Button 
             Grid.Row="0" Grid.Column="1"
             Content="⮝"
-            Command="{Binding MoveUpCommand}">
+            Command="{Binding MoveUpCommand}"
+            ToolTip.Tip="Press `Shift + Up` to move 10x faster">
+            <Button.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </Button.CommandParameter>
         </Button>
         <Button
             Grid.Row="2" Grid.Column="1"
             Content="⮟"
-            Command="{Binding MoveDownCommand}">
+            Command="{Binding MoveDownCommand}"
+            ToolTip.Tip="Press `Shift + Down` to move 10x faster">
+            <Button.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </Button.CommandParameter>
         </Button>
         
         <!-- Выстрадано за почти целый день -->
@@ -43,6 +62,7 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                         <TextBlock
+                            FontFamily="Monospace"
                             Margin="10"
                             Text="{Binding Text}"
                             FontWeight="{Binding FontWeight}"/>
@@ -51,4 +71,47 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
+
+    
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Left" Command="{Binding MoveLeftCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Right" Command="{Binding MoveRightCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </KeyBinding.CommandParameter></KeyBinding>
+        <KeyBinding Gesture="Up" Command="{Binding MoveUpCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Down" Command="{Binding MoveDownCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>1</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+
+        <KeyBinding Gesture="Shift+Left" Command="{Binding MoveLeftCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>10</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Shift+Right" Command="{Binding MoveRightCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>10</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Shift+Up" Command="{Binding MoveUpCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>10</sys:Int32>
+            </KeyBinding.CommandParameter>
+        </KeyBinding>
+        <KeyBinding Gesture="Shift+Down" Command="{Binding MoveDownCommand}">
+            <KeyBinding.CommandParameter>
+                <sys:Int32>10</sys:Int32>
+            </KeyBinding.CommandParameter></KeyBinding>
+    </Window.KeyBindings>
 </Window>

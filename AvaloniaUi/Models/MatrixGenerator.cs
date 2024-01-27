@@ -1,11 +1,13 @@
 using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using MatrixFile;
-using MatrixFile.Bytes;
 using org.matheval;
 
 namespace AvaloniaUi.Models;
 
-class MatrixGenerator
+class MatrixGenerator : IDisposable
 {
     Expression itemExpression;
     Metadata matrixMetadata;
@@ -22,20 +24,31 @@ class MatrixGenerator
             Rows = sideSize,
         };
     }
-    public async void Generate(string filePath)
+
+    public ProgressChangedEventHandler? ProgressEvent { get; set; }
+
+    public async Task Generate(string filePath, CancellationToken cancellationToken)
     {
         var matrix = new Matrix(filePath, matrixMetadata, noFill: true);
         using(ItemsStream items = matrix.GetData())
         {
+            var percent = int.Max(matrix.Rows / 100, 100);
             for (int i = 0; i < matrix.Rows; ++i)
             {
+                if(i % percent == 0) {
+                    ProgressEvent?.Invoke(this, new ProgressChangedEventArgs(i / percent, null));
+                }
                 for (int j = 0; j < matrix.Columns; ++j) {
                     itemExpression.Bind("i", i+1);
                     itemExpression.Bind("j", j+1);
                     itemExpression.Bind("kr", Convert.ToInt32(i == j));
-                    await items.WriteItemAsync(itemExpression.Eval<int>());
+                    await items.WriteItemAsync(itemExpression.Eval<int>(), cancellationToken);
                 }
             }
         }
+    }
+    public void Dispose()
+    {
+        
     }
 }

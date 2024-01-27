@@ -1,12 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
 using Avalonia.Platform.Storage;
 using AvaloniaUi.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using org.matheval;
 
@@ -65,6 +67,13 @@ public partial class MatrixGeneratorVm : VmBase
         }
     }
 
+    [ObservableProperty]
+    private int progress = 0;
+
+    [ObservableProperty]
+    private bool isGenerating = false;
+
+
     private async Task<IStorageFile?> DoSaveFilePickerAsync()
     {
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
@@ -79,6 +88,7 @@ public partial class MatrixGeneratorVm : VmBase
         });
     }
 
+    private CancellationTokenSource generateCancellationSource = new CancellationTokenSource();
 
     [RelayCommand]
     private async Task Generate()
@@ -87,13 +97,34 @@ public partial class MatrixGeneratorVm : VmBase
         {
             throw new UnreachableException();
         }
+        
         var generator = new MatrixGenerator(itemExpression, matrixSideSize);
-
+        generator.ProgressEvent += (sender, e) => {
+            Progress = e.ProgressPercentage;
+        };
+        
         var file = await DoSaveFilePickerAsync();
         if(file == null)
         {
             return;
         }
-        generator.Generate(file.Path.AbsolutePath);
+
+        try
+        {
+            IsGenerating = true;
+            await generator.Generate(file.Path.AbsolutePath, generateCancellationSource.Token);
+        }
+        catch(TaskCanceledException)
+        {
+        }
+        finally
+        {
+            IsGenerating = false;
+        }
+    }
+    
+    public void StopGeneration()
+    {
+        generateCancellationSource.Cancel();
     }
 }

@@ -5,7 +5,7 @@
         xmlns:cc="using:AvaloniaUi.CustomControls"
         xmlns:vm="using:AvaloniaUi.ViewModels"
         xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
         x:Class="AvaloniaUi.Views.MainWindow"
         Title="AvaloniaUi"
         x:CompileBindings="True"
