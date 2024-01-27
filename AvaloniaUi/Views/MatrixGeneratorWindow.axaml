@@ -1,0 +1,46 @@
+<Window 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cc="using:AvaloniaUi.CustomControls"
+    xmlns:vm="using:AvaloniaUi.ViewModels"
+    xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="AvaloniaUi.Views.MatrixGeneratorWindow"
+    Title="AvaloniaUi"
+    x:CompileBindings="True"
+    x:DataType="vm:MatrixGeneratorVm">
+    <Grid 
+        DockPanel.Dock="Top"
+        ColumnDefinitions="Auto,Auto" RowDefinitions="*,*,*,Auto"
+        ShowGridLines="True"
+        VerticalAlignment="Top">
+        
+        <TextBlock 
+            Grid.Row="0" Grid.Column="0"
+            Margin="4">
+            Expression which defines matrix item at (i,j)
+        </TextBlock>
+        <TextBox Grid.Row="0" Grid.Column="1"
+            Margin="4"
+            Text="{Binding ItemExpression, Mode=TwoWay}"/>
+
+        <TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Margin="4">
+            The size of the matrix side
+        </TextBlock>
+        <TextBox
+            Grid.Row="1" Grid.Column="1"
+            Margin="4"
+            Text="{Binding MatrixSideSize, Mode=TwoWay}"/>
+        
+        <Button 
+            Grid.Row="2" Grid.ColumnSpan="2"
+            Margin="4"
+            Command="{Binding GenerateCommand}">
+            Generate
+        </Button>
+    </Grid>
+</Window>

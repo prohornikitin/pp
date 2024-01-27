@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cc="using:AvaloniaUi.CustomControls"
+        xmlns:vm="using:AvaloniaUi.ViewModels"
+        xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaUi.Views.MainWindow"
+        Title="AvaloniaUi"
+        x:CompileBindings="True"
+        x:DataType="vm:MainVm">
+    <DockPanel LastChildFill="True">
+        <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding ErrorMessages}"/>
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+            <Button Command="{Binding OpenFileCommand}">Open file</Button>
+            <Button Command="{Binding OpenGeneratorCommand}">Generate</Button>
+        </StackPanel>
+    </DockPanel>
+</Window>
