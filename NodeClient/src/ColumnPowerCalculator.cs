@@ -4,7 +4,7 @@ using static System.Linq.Enumerable;
 using static NodeClient.Utils;
 
 namespace NodeClient;
-public class ColumnPolynomCalculator : IDisposable{
+public class ColumnPolynomCalculator : IDisposable {
     private Matrix lastCalcedColumn;
     private IEnumerable<PolynomPart> polynomParts;
     private Matrix initialMatrix;
@@ -36,6 +36,11 @@ public class ColumnPolynomCalculator : IDisposable{
     {
         var resultMetadata = initialMatrix.Metadata with {Columns = 1};
         var result = new Matrix(resultPath, resultMetadata, FileAccess.ReadWrite);
+        
+        if(polynomParts.Count() == 0)
+        {
+            return result;
+        }
 
         if(polynomParts.First().Power == 0)
         {
