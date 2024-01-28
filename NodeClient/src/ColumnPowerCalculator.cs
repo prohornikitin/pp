@@ -8,7 +8,7 @@ public class ColumnPolynomCalculator : IDisposable{
     private Matrix lastCalcedColumn;
     private IEnumerable<PolynomPart> polynomParts;
     private Matrix initialMatrix;
-    private int lastCalcedPower = 0;
+    private int lastCalcedPower = 1;
     private int column;
 
     public ColumnPolynomCalculator(Matrix initialMatrix, int column, IEnumerable<PolynomPart> polynomParts)
