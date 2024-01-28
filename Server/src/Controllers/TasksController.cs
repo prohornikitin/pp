@@ -86,6 +86,7 @@ namespace Server.Controllers
             };
             await db.UserTasks.AddAsync(task);
             await db.SaveChangesAsync();
+            db.NotifyTaskAdded();
             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, new { id = task.Id });
         }
 

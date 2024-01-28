@@ -54,7 +54,7 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         }
     }
 
-    private async Task<NodeTask?> ScheduleNextTask(IEnumerable<long> preferredMatrixIds)
+    private async Task<NodeTask?> TryScheduleNextTask(IEnumerable<long> preferredMatrixIds)
     {
         var previouslyFailedNodeTask = await db.NodeTasks.Include(t => t.UserTask).FirstOrDefaultAsync(
             t => t.State == TaskState.Fail
@@ -99,11 +99,11 @@ public class ComputingNodeService : ComputingNode.ComputingNodeBase
         GetTaskRequest request,
         ServerCallContext context)
     {
-        var task = await ScheduleNextTask(request.PreferredMatrixIds);
-        if (task == null)
+        var task = await TryScheduleNextTask(request.PreferredMatrixIds);
+        while (task == null)
         {
-            context.Status = new Status(StatusCode.NotFound, "task not found");
-            return new GetTaskResponse() {};
+            await db.WaitForTaskAdd(context.CancellationToken);
+            task = await TryScheduleNextTask(request.PreferredMatrixIds);
         }
         var response = new GetTaskResponse{
             InitialMatrixId = task.UserTask.InitialMatrixId,
