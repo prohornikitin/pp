@@ -8,13 +8,11 @@ public class ColumnPolynomCalculator : IDisposable{
     private Matrix lastCalcedColumn;
     private IEnumerable<PolynomPart> polynomParts;
     private Matrix initialMatrix;
-    private int column;
     private int lastCalcedPower = 1;
 
     public ColumnPolynomCalculator(Matrix initialMatrix, int column, IEnumerable<PolynomPart> polynomParts)
     {
         this.initialMatrix = initialMatrix;
-        this.column = column;
         this.polynomParts = polynomParts;
 
         var bufferMetadata = new Metadata
@@ -39,8 +37,13 @@ public class ColumnPolynomCalculator : IDisposable{
         foreach (var polynomPart in polynomParts)
         {
             var power = polynomPart.Power;
-            var matrix = CalcPower(power) * polynomPart.Coefficient;
-            result.Add(matrix);
+            var poweredMatrix = CalcPower(power);
+            if(polynomPart.Coefficient == 1) {
+                result.Add(poweredMatrix);
+            } else {
+                var matrix = poweredMatrix * polynomPart.Coefficient;
+                result.Add(matrix);
+            }
         }
         return result;
     }

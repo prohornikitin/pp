@@ -2,7 +2,6 @@
 using Grpc.Net.Client;
 using MatrixFile;
 using ComputingNodeGen;
-using Grpc.Core;
 using ComputingNodeClient = ComputingNodeGen.ComputingNode.ComputingNodeClient;
 
 namespace NodeClient;
@@ -20,20 +19,8 @@ internal class Program
         {
             while(true)
             {
-                try
-                {
-                    task = await client.GetTaskAsync(new GetTaskRequest());
-                    Console.WriteLine($"task {task.TaskId} found");
-                }
-                catch(RpcException e)
-                {
-                    if(e.Status.StatusCode != StatusCode.NotFound)
-                    {
-                        throw;
-                    }
-                    await Task.Delay(5000);
-                    continue;
-                }
+                task = await client.GetTaskAsync(new GetTaskRequest());
+                Console.WriteLine($"task {task.TaskId} found");
 
                 var matrix = await GetInitialMatrix(client, task.InitialMatrixId);
 
