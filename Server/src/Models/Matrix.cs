@@ -8,7 +8,8 @@ public class Matrix
         using var file = File.OpenRead(filePath);
         return new Matrix {
             FilePath = filePath,
-            Metadata = Metadata.ReadFrom(file)
+            Metadata = Metadata.ReadFrom(file),
+            Name = "",
         };
     }
 
@@ -18,9 +19,11 @@ public class Matrix
         return new Matrix {
             FilePath = filePath,
             Metadata = metadata,
+            Name = "",
         };
     }
     public long Id { get; set; }
     public required Metadata Metadata { get; set; }
     public required string FilePath { get; set; }
+    public required string Name { get; set; }
 }

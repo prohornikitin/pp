@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Server.Models;
 using MatrixFile;
 using Matrix = Server.Models.Matrix;
+using Server.JsonModels;
 
 
 namespace Server.Controllers;
@@ -42,7 +43,6 @@ public class MatricesController : ControllerBase
     }
 
     // POST: api/Matrices
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Consumes("application/octet-stream")]
     public async Task<ActionResult> PostBinary()
@@ -57,13 +57,34 @@ public class MatricesController : ControllerBase
         var matrix = new Matrix() { 
             FilePath = matrixFile.FilePath,
             Metadata = matrixFile.Metadata,
+            Name = "Unspecified",
         };
         await context.Matrices.AddAsync(matrix);
         await context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetMatricesList), new { id = matrix.Id }, new { id = matrix.Id });
     }
 
-    // DELETE: api/Matrices/5
+    // PATCH api/Matrices/{id}
+    [HttpPatch("{id}")]
+    public async Task<ActionResult> PatchMatrix(MatrixPatch patch)
+    {
+        var matrix = await context.Matrices.FindAsync(patch.Id);
+        if (matrix == null)
+        {
+            return NotFound();
+        }
+
+        if (patch.Name == null)
+        {
+            return Ok();
+        }
+
+        matrix.Name = patch.Name;
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+
+    // DELETE: api/Matrices/{id}
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteMatrix(long id)
     {
