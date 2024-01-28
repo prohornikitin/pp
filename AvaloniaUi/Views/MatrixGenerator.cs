@@ -1,18 +1,13 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using AvaloniaUi.ViewModels;
 
 namespace AvaloniaUi.Views;
-public partial class MatrixGeneratorWindow : Window
+public partial class MatrixGenerator : UserControl
 {
-    public MatrixGeneratorWindow()
+    public MatrixGenerator()
     {
         InitializeComponent();
-    }
-
-    protected override void OnClosing(WindowClosingEventArgs e)
-    {
-        var vm = DataContext as MatrixGeneratorVm;
-        vm?.StopGeneration();
-        base.OnClosing(e);
+        DataContext = new MatrixGeneratorVm();
     }
 }

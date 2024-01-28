@@ -8,18 +8,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AvaloniaUi.ViewModels;
-public partial class MatrixViewerVm : VmBase, IDisposable
+public partial class MatrixViewerVm : TabInnerVmBase
 {
     public ObservableCollection<MatrixItemVm> Items {get; set;} = new();
+
     public ObservableCollection<int> data = new ObservableCollection<int>();
 
     private IMatrixSquareMovingWindow window = new NullMatrixMovingWindow(10);
 
     [ObservableProperty]
-    public int topRow = 1;
+    private int topRow = 1;
 
     [ObservableProperty]
-    public int leftColumn = 1;
+    private int leftColumn = 1;
 
     [RelayCommand]
     private void MoveLeft(int delta=1)
@@ -70,6 +71,7 @@ public partial class MatrixViewerVm : VmBase, IDisposable
     public MatrixViewerVm(IMatrixSquareMovingWindow src)
     {
         //If it's working then do not touch!
+        Header = src.FileName;
         window = src;
         UpdateDataFrom(window.GetWindowContent());
         data.CollectionChanged += OnDataChanged;
@@ -154,7 +156,7 @@ public partial class MatrixViewerVm : VmBase, IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         window.Dispose();
     }

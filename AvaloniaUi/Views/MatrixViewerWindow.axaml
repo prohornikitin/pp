@@ -1,15 +1,11 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:cc="using:AvaloniaUi.CustomControls"
         xmlns:vm="using:AvaloniaUi.ViewModels"
-        xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
         mc:Ignorable="d"
-        x:Class="AvaloniaUi.Views.MatrixViewerWindow"
-        Title="AvaloniaUi"
-        
+        x:Class="AvaloniaUi.Views.MatrixViewer"        
         x:DataType="vm:MatrixViewerVm">
     <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
         <Button
@@ -73,7 +69,7 @@
     </Grid>
 
     
-    <Window.KeyBindings>
+    <UserControl.KeyBindings>
         <KeyBinding Gesture="Left" Command="{Binding MoveLeftCommand}">
             <KeyBinding.CommandParameter>
                 <sys:Int32>1</sys:Int32>
@@ -113,5 +109,5 @@
             <KeyBinding.CommandParameter>
                 <sys:Int32>10</sys:Int32>
             </KeyBinding.CommandParameter></KeyBinding>
-    </Window.KeyBindings>
-</Window>
+    </UserControl.KeyBindings>
+</UserControl>

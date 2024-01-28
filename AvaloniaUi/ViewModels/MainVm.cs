@@ -1,42 +1,36 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform.Storage;
-using AvaloniaUi.Views;
+using AvaloniaUi.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AvaloniaUi.ViewModels;
 
 public partial class MainVm : VmBase
 {
+    public ObservableCollection<TabVm> Tabs { get; } = new ObservableCollection<TabVm>();
 
+    public MainVm() {
+        OpenNewTab(TabVm.CreateGeneratorTab());
+    }
 
+    private void OpenNewTab(TabVm vm) {
+        vm.OnClose += (sender) => {
+            Tabs.Remove(sender);
+        };
+        Tabs.Add(vm);
+    }
+    
     [ObservableProperty]
     public ObservableCollection<string> errorMessages = new ObservableCollection<string>();
 
     [RelayCommand]
     private void OpenGenerator()
     {
-        var generatorWindow = new MatrixGeneratorWindow() {
-            DataContext = new MatrixGeneratorVm(),
-        };
-        generatorWindow.Show();
-        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            throw new Exception("Is not a desktop application");
-        }
-        if(desktop == null || desktop.MainWindow == null)
-        {
-            throw new UnreachableException();
-        }
-        generatorWindow.Closing += (sender, e) => desktop.MainWindow.Show();
-        desktop.MainWindow.Hide();
+        OpenNewTab(TabVm.CreateGeneratorTab());
     }
 
 
@@ -45,21 +39,18 @@ public partial class MainVm : VmBase
     {
         ErrorMessages?.Clear();
         try {
-            var file = await DoOpenFilePickerAsync();
+            var filesService = App.Current?.Services?.GetService<IFilesService>();
+            if (filesService == null)
+            {
+                throw new NullReferenceException("Missing File Service instance.");
+            }
+
+            var file = await filesService.OpenFilesAsync();
             if (file == null)
             {
                 return;
             }
-            
-            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                throw new Exception("Is not a desktop application");
-            }
-            
-            var viewerWindow = new MatrixViewerWindow(file.Path.AbsolutePath);
-            desktop?.MainWindow?.Hide();
-            viewerWindow.Show();
-            viewerWindow.Closing += (sender, e) => desktop?.MainWindow?.Show();
+            OpenNewTab(TabVm.CreateViewerTab(file.Path.LocalPath));
         } 
         catch(Exception e)
         {
@@ -67,18 +58,18 @@ public partial class MainVm : VmBase
         }
     }
 
-    private async Task<IStorageFile?> DoOpenFilePickerAsync()
-    {
-        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
-            desktop.MainWindow?.StorageProvider is not { } provider)
-            throw new NullReferenceException("Missing StorageProvider instance.");
+    // private async Task<IStorageFile?> DoOpenFilePickerAsync()
+    // {
+    //     if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
+    //         desktop.MainWindow?.StorageProvider is not { } provider)
+    //         throw new NullReferenceException("Missing StorageProvider instance.");
 
-        var files = await provider.OpenFilePickerAsync(new FilePickerOpenOptions()
-        {
-            Title = "Open Matrix File",
-            AllowMultiple = false,
-        });
+    //     var files = await provider.OpenFilePickerAsync(new FilePickerOpenOptions()
+    //     {
+    //         Title = "Open Matrix File",
+    //         AllowMultiple = false,
+    //     });
 
-        return files?.Count == 1 ? files[0] : null;
-    }
+    //     return files?.Count == 1 ? files[0] : null;
+    // }
 }

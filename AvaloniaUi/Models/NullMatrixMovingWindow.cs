@@ -5,6 +5,7 @@ namespace AvaloniaUi.Models;
 
 public class NullMatrixMovingWindow : IMatrixSquareMovingWindow
 {
+    public string FileName => "No File";
     private Point location;
     public Point Location { 
         get => location; 
@@ -16,7 +17,7 @@ public class NullMatrixMovingWindow : IMatrixSquareMovingWindow
         }
     }
 
-    public int SideLength { get; private set;}
+    public int SideLength { get; set;}
     private int[] zeros;
     public NullMatrixMovingWindow(int windowSideLength)
     {

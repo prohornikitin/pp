@@ -5,7 +5,7 @@ using MatrixFile.Bytes;
 
 namespace AvaloniaUi.Models;
 
-public class FileMatrixMovingWindow : IMatrixSquareMovingWindow
+public class MatrixMovingWindow : IMatrixSquareMovingWindow
 {
     public Point Location
     {
@@ -16,8 +16,8 @@ public class FileMatrixMovingWindow : IMatrixSquareMovingWindow
                 TopLeftPoint = value
             };
             if (
-                newWindow.Right > matrixMetadata.Width || 
-                newWindow.Down > matrixMetadata.Height ||
+                newWindow.Right > meta.Width || 
+                newWindow.Down > meta.Height ||
                 newWindow.Left < 0 ||
                 newWindow.Up < 0
             )
@@ -28,15 +28,25 @@ public class FileMatrixMovingWindow : IMatrixSquareMovingWindow
         }
     }
 
-    public int SideLength => window.Side;
+    public int SideLength {
+        get => window.Side;
+        set
+        {
+            window.Side = SideLength;
+        }
+    }
+
+    public string FileName { get; }
 
     private Square window;
     private RectangleBlockStream src;
-    private MatrixFile.Metadata matrixMetadata;
-    public FileMatrixMovingWindow(MatrixFile.Matrix matrix, int maxWindowSideLength)
+    private MatrixFile.Metadata meta;
+    public MatrixMovingWindow(string filePath, int maxWindowSideLength)
     {
-        matrixMetadata = matrix.Metadata;
-        var minDimension = int.Min(matrix.Metadata.Columns, matrix.Metadata.Rows);
+        FileName = Path.GetFileName(filePath);
+        var matrix = new MatrixFile.Matrix(filePath);
+        meta = matrix.Metadata;
+        var minDimension = int.Min(meta.Columns, meta.Rows);
         window = new Square(new Point(0,0), int.Min(maxWindowSideLength, minDimension));
         src = matrix.GetRectangleBlock(window.ToRectangle());
     }

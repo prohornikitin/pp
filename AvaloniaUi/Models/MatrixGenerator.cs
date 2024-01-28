@@ -32,7 +32,7 @@ class MatrixGenerator : IDisposable
         var matrix = new Matrix(filePath, matrixMetadata, noFill: true);
         using(ItemsStream items = matrix.GetData())
         {
-            var percent = int.Max(matrix.Rows / 100, 100);
+            var percent = int.Max(matrix.Rows / 100, 1);
             for (int i = 0; i < matrix.Rows; ++i)
             {
                 if(i % percent == 0) {
@@ -42,7 +42,8 @@ class MatrixGenerator : IDisposable
                     itemExpression.Bind("i", i+1);
                     itemExpression.Bind("j", j+1);
                     itemExpression.Bind("kr", Convert.ToInt32(i == j));
-                    await items.WriteItemAsync(itemExpression.Eval<int>(), cancellationToken);
+                    var value = await Task.Run(itemExpression.Eval<int>);
+                    await items.WriteItemAsync(value, cancellationToken);
                 }
             }
         }

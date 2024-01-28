@@ -2,19 +2,76 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cc="using:AvaloniaUi.CustomControls"
+        xmlns:conv="clr-namespace:AvaloniaUi.Converters;assembly=AvaloniaUi"
         xmlns:vm="using:AvaloniaUi.ViewModels"
-        xmlns:local="clr-namespace:AvaloniaUi;assembly=AvaloniaUi"
+        xmlns:views="using:AvaloniaUi.Views"
         mc:Ignorable="d"
         x:Class="AvaloniaUi.Views.MainWindow"
         Title="AvaloniaUi"
         x:CompileBindings="True"
         x:DataType="vm:MainVm">
-    <DockPanel LastChildFill="True">
+    <Window.Resources>
+        <conv:ItemToCollectionConverter x:Key="ItemToCollectionConverter" />
+    </Window.Resources>
+    
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenFileCommand}" />
+        <KeyBinding Gesture="Ctrl+G" Command="{Binding OpenGeneratorCommand}" />
+    </Window.KeyBindings>
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open Matrix File" Command="{Binding OpenFileCommand}"/>
+                <MenuItem Header="_Open Generator" Command="{Binding OpenGeneratorCommand}"/>
+            </MenuItem>
+            <!-- <MenuItem Header="_Edit">
+                <MenuItem Header="Copy" HotKey=""/>
+                <MenuItem Header="Paste"/>
+            </MenuItem> -->
+        </Menu>
         <ListBox DockPanel.Dock="Bottom" ItemsSource="{Binding ErrorMessages}"/>
-        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
-            <Button Command="{Binding OpenFileCommand}">Open file</Button>
-            <Button Command="{Binding OpenGeneratorCommand}">Generate</Button>
-        </StackPanel>
+        <TabControl x:Name="Tabs" ItemsSource="{Binding Tabs}">
+            <TabControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:TabVm">
+                    <Border 
+                        Background="Gainsboro"
+                        CornerRadius="3"
+                        Padding="4">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left"
+                            VerticalAlignment="Center" HorizontalAlignment="Left"
+                            FontSize="18"
+                            Margin="0 0 8 0"
+                            Text="{Binding Header}" />
+                        <Button 
+                            DockPanel.Dock="Right"
+                            Margin="0 4" FontSize="12"
+                            Command="{Binding CloseCommand}">X</Button>
+                    </DockPanel>
+                    </Border>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate x:DataType="vm:TabVm">
+                    <ItemsControl ItemsSource="{Binding InnerVm, Converter={StaticResource ItemToCollectionConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <Binding x:DataType="vm:TabVm" Path="Type">
+                                <Binding.Converter>
+                                    <conv:TemplateDictionaryConverter>
+                                        <DataTemplate x:Key="Generator">
+                                            <views:MatrixGenerator/>
+                                        </DataTemplate>
+                                        <DataTemplate x:Key="Viewer" x:DataType="vm:MatrixViewerVm">
+                                            <views:MatrixViewer DataContext="{Binding .}" />
+                                        </DataTemplate>
+                                    </conv:TemplateDictionaryConverter>
+                                </Binding.Converter>
+                            </Binding>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
     </DockPanel>
 </Window>

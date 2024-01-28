@@ -3,19 +3,24 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data;
 using Avalonia.Platform.Storage;
 using AvaloniaUi.Models;
+using AvaloniaUi.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using org.matheval;
 
 namespace AvaloniaUi.ViewModels;
 
-public partial class MatrixGeneratorVm : VmBase
+public partial class MatrixGeneratorVm : TabInnerVmBase
 {
+
+    public MatrixGeneratorVm()
+    {
+        Header = "Generator";
+    }
     private string itemExpression = "kr";
     private bool isItemExpressionValid = true;
     public string ItemExpression
@@ -66,7 +71,7 @@ public partial class MatrixGeneratorVm : VmBase
             RaiseAndSetIfChanged(ref matrixSideSize, number);
         }
     }
-
+    
     [ObservableProperty]
     private int progress = 0;
 
@@ -76,16 +81,13 @@ public partial class MatrixGeneratorVm : VmBase
 
     private async Task<IStorageFile?> DoSaveFilePickerAsync()
     {
-        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
-            desktop.MainWindow?.StorageProvider is not { } provider)
+        var filesService = App.Current?.Services?.GetService<IFilesService>();
+        if (filesService == null)
         {
-            throw new NullReferenceException("Missing StorageProvider instance.");
+            throw new NullReferenceException("Missing File Service instance.");
         }
         
-        return await provider.SaveFilePickerAsync(new FilePickerSaveOptions()
-        {
-            Title = "Save Generated Matrix File"
-        });
+        return await filesService.SaveFileAsync("Save Generated Matrix File");
     }
 
     private CancellationTokenSource generateCancellationSource = new CancellationTokenSource();
@@ -109,22 +111,32 @@ public partial class MatrixGeneratorVm : VmBase
             return;
         }
 
+        Header = $"Generating {file.Name}";
+
         try
         {
             IsGenerating = true;
             await generator.Generate(file.Path.AbsolutePath, generateCancellationSource.Token);
         }
-        catch(TaskCanceledException)
+        catch(TaskCanceledException e)
         {
+            Console.WriteLine(e);
         }
         finally
         {
             IsGenerating = false;
         }
+
+        Header = $"Generated {file.Name}";
     }
-    
+
     public void StopGeneration()
     {
         generateCancellationSource.Cancel();
+    }
+
+    public override void Dispose()
+    {
+        StopGeneration();
     }
 }
