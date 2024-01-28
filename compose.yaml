@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  server:
+    tty: true
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+      args: 
+        BUILD_TARGET: Server
+    ports:
+      - "8000:8000"
+      - "5113:5113"
+
+  node_client:
+    tty: true
+    build:
+      context: .
+      dockerfile: NodeClient/Dockerfile
+      args: 
+        BUILD_TARGET: NodeClient
+    deploy:
+      replicas: 4
+    depends_on: 
+      - server
+    restart: on-failure
