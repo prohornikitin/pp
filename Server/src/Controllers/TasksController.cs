@@ -59,6 +59,21 @@ namespace Server.Controllers
             return File(src, "application/octet-stream");
         }
 
+        private Task<IEnumerable<PolynomPart>> TransformToWellFormedPolynom(
+            IEnumerable<PolynomPart> original)
+        {
+            return Task.Run(
+                () => original
+                    .GroupBy(x => x.Power, (power, group) => new PolynomPart(){
+                        Coefficient = group.Sum(x=>x.Coefficient),
+                        Power = power,
+                    })
+                    .Where(x => x.Coefficient != 0)
+                    .OrderBy(x => x.Power)
+                    .ToList().AsEnumerable()
+            );
+        }
+
         // POST: api/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -72,9 +87,10 @@ namespace Server.Controllers
             var resultPath = Path.Join(matricesDir, $"{Guid.NewGuid()}.bin");
             var result = Matrix.EmptyWithMetadata(resultPath, initialMatrix.Metadata);
             await db.Matrices.AddAsync(result);
+            
             var task = new UserTask {
                 Name = request.Name,
-                Polynom = request.Polynom,
+                Polynom = await TransformToWellFormedPolynom(request.Polynom),
                 InitialMatrix = initialMatrix,
                 InitialMatrixId = initialMatrix.Id,
                 UnscheduledColumns = new IntRange{
