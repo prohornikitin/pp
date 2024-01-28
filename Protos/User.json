@@ -13,6 +13,7 @@
                 "type": "array",
                 "minItems": 1,
                 "items": {
+                    "required": ["power", "coefficient"],
                     "type": "object",
                     "properties": {
                         "power": { "type": "integer" },
@@ -30,6 +31,7 @@
             },
             "task_minimal": {
                 "type": "object",
+                "required": ["id", "name", "status"],
                 "properties": {
                     "id": { "type": "integer" },
                     "name": { "type": "string" },
@@ -40,6 +42,16 @@
                             "ResultReady"
                         ]
                     }
+                }
+            },
+            "matrix_patch": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {
+                    "id": { 
+                        "type": "integer" 
+                    },
+                    "name": { "type": "string" }
                 }
             }
         }
@@ -81,6 +93,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object",
+                                    "required": ["id"],
                                     "properties": {
                                         "id": { "type": "integer" }
                                     }
@@ -151,6 +164,39 @@
                         }
                     }
                 }
+            },
+            "patch": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "matrixId",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/matrix_patch"
+                            }
+                        }
+                    }
+                },
+                "description": "Download matrix",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/matrices": {
@@ -197,6 +243,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object",
+                                    "required": ["matrixId"],
                                     "properties": {
                                         "matrixId": { "type": "integer" }
                                     }
