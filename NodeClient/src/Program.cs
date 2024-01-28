@@ -3,17 +3,18 @@ using Grpc.Net.Client;
 using MatrixFile;
 using ComputingNodeGen;
 using ComputingNodeClient = ComputingNodeGen.ComputingNode.ComputingNodeClient;
+using System.Text.Json;
 
 namespace NodeClient;
 internal class Program
 {
-    private static readonly string matricesDir = "matricesTemporary";
+    private static readonly Config config = ReadConfig();
     private static async Task Main()
     {
-        Directory.CreateDirectory(matricesDir);
-
-        var channel = GrpcChannel.ForAddress("http://localhost:5113");
+        Directory.CreateDirectory(config.MatricesDir);
+        var channel = GrpcChannel.ForAddress(config.FullAddress);
         var client = new ComputingNodeClient(channel);
+
         GetTaskResponse? task = null;
         try
         {
@@ -37,6 +38,17 @@ internal class Program
         
     }
 
+    private static Config ReadConfig()
+    {
+        using var stream = File.OpenRead("./config.json");
+        var parsed =  JsonSerializer.Deserialize<Config>(stream);
+        if (parsed == null)
+        {
+            throw new Exception("No configuration found at ./config.json");
+        }
+        return parsed;
+    }
+
     private static async Task SubmitError(ComputingNodeClient client, long taskId, string errorDescription)
     {
         await client.ReportNodeErrorAsync(new ReportNodeErrorRequest {
@@ -47,7 +59,7 @@ internal class Program
 
     private static async Task<Matrix> GetInitialMatrix(ComputingNodeClient client, long matrixId)
     {
-        var initialMatrixPath = Path.Join(matricesDir, $"{matrixId}.bin");
+        var initialMatrixPath = Path.Join(config.MatricesDir, $"{matrixId}.bin");
         if(File.Exists(initialMatrixPath)) {
             return new Matrix(initialMatrixPath);
         }
@@ -87,7 +99,7 @@ internal class Program
 
     private static Matrix ProcessTask(GetTaskResponse task, Matrix initialMatrix)
     {
-        var resultPath = Path.Join(matricesDir, "output.bin");
+        var resultPath = Path.Join(config.MatricesDir, "output.bin");
         var calculator = new ColumnPolynomCalculator(initialMatrix, task.Column, task.PolynomParts);
         return calculator.CalcPolynom(resultPath);
     }

@@ -1,0 +1,5 @@
+{
+    "Ip": "localhost",
+    "Port": "5113",
+    "MatricesDir": "./matrices/"
+}
