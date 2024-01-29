@@ -49,6 +49,7 @@ public class ColumnPolynomCalculator : IDisposable {
                 data.SeekItem(column, SeekOrigin.Begin);
                 data.WriteItem(polynomParts.First().Coefficient);
             }
+            polynomParts = polynomParts.Skip(1);
         }
         foreach (var polynomPart in polynomParts)
         {
